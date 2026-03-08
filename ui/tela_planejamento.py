@@ -1,0 +1,214 @@
+import flet as ft
+
+from data.supabase_client import (
+    buscar_entradas,
+    buscar_gastos_por_mes,
+    excluir_gasto,
+)
+from ui.layout_base import (
+    TEXT_PRIMARY,
+    TEXT_SECONDARY,
+    CARD_BG,
+    CARD_RADIUS,
+    CARD_PADDING,
+    CARD_TITLE_SIZE,
+    CARD_SUBTITLE_SIZE,
+    VALUE_SIZE,
+    SUMMARY_LABEL_SIZE,
+    SUMMARY_VALUE_SIZE,
+)
+
+# ---------- MOCK DE ENTRADAS ----------
+ENTRADAS_MOCK = [
+    {"descricao": "Salário", "valor": "R$ 2.500,00"},
+    {"descricao": "Freela", "valor": "R$ 350,00"},
+]
+
+# ---------- MOCK DE GASTOS POR MÊS ----------
+DADOS_POR_MES = {
+    "2026-01": [
+        {"data": "08", "descricao": "Rosiane (comida)", "valor": "R$ 235,00", "pago": True},
+        {"data": "10", "descricao": "Rejane (comida)", "valor": "R$ 150,00", "pago": True},
+        {"data": "21", "descricao": "Água", "valor": "R$ 156,86", "pago": False},
+        {"data": "24", "descricao": "Luz", "valor": "R$ 180,00", "pago": False},
+    ],
+    "2026-02": [
+        {"data": "05", "descricao": "Internet", "valor": "R$ 120,00", "pago": False},
+        {"data": "10", "descricao": "Academia", "valor": "R$ 90,00", "pago": True},
+        {"data": "18", "descricao": "Cartão", "valor": "R$ 540,00", "pago": False},
+    ],
+}
+
+# ---------- FUNÇÕES AUXILIARES ----------
+def mes_formatado(mes_atual):
+    meses = [
+        "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+        "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+    ]
+    return f"{meses[mes_atual['mes'] - 1]} {mes_atual['ano']}"
+
+
+def valor_para_float(valor_str):
+    return float(
+        valor_str.replace("R$", "")
+        .replace(".", "")
+        .replace(",", ".")
+        .strip()
+    )
+
+
+def calcular_resumo_real(gastos, entradas):
+    total_gastos = sum(float(g["valor"]) for g in gastos) if gastos else 0
+    total_entradas = sum(float(e["valor"]) for e in entradas) if entradas else 0
+    saldo = total_entradas - total_gastos
+    return total_entradas, total_gastos, saldo
+
+def resumo_mes(gastos, entradas):
+    total_gastos = sum(valor_para_float(i["valor"]) for i in gastos)
+    total_entradas = sum(valor_para_float(i["valor"]) for i in entradas)
+    saldo = total_entradas - total_gastos
+    return total_entradas, total_gastos, saldo
+
+def formatar_real(valor):
+    return f"R$ {valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
+
+# ---------- COMPONENTES ----------
+def coluna_resumo(titulo, valor):
+    if titulo == "Saldo":
+        cor = "#6ee7b7" if valor >= 0 else "#fb7185"
+    elif titulo == "Entradas":
+        cor = "#6ee7b7"
+    else:
+        cor = "#fb7185"
+
+    return ft.Column(
+        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        controls=[
+            ft.Text(
+                titulo,
+                size=SUMMARY_LABEL_SIZE,
+                color=TEXT_SECONDARY,
+            ),
+            ft.Text(
+                f"R$ {valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."),
+                size=SUMMARY_VALUE_SIZE,
+                weight=ft.FontWeight.W_600,
+                color=cor,
+            ),
+        ],
+    )
+
+
+def card_resumo(total_entradas, total_gastos, saldo):
+    return ft.Container(
+        bgcolor=CARD_BG,
+        border_radius=CARD_RADIUS,
+        padding=20,
+        content=ft.Row(
+            alignment=ft.MainAxisAlignment.SPACE_AROUND,
+            controls=[
+                coluna_resumo("Entradas", total_entradas),
+                coluna_resumo("Gastos", total_gastos),
+                coluna_resumo("Saldo", saldo),
+            ],
+        ),
+    )
+
+def linha_planejamento(item, page, navegar):
+    return ft.Container(
+        bgcolor=CARD_BG,
+        border_radius=CARD_RADIUS,
+        padding=CARD_PADDING,
+        content=ft.Row(
+            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+            vertical_alignment=ft.CrossAxisAlignment.CENTER,
+            controls=[
+                ft.Column(
+                    spacing=2,
+                    controls=[
+                        ft.Text(
+                            item["descricao"],
+                            size=CARD_TITLE_SIZE,
+                            weight=ft.FontWeight.W_600,
+                            color=TEXT_PRIMARY,
+                        ),
+                        ft.Text(
+                            f"Dia {item['data']}",
+                            size=CARD_SUBTITLE_SIZE,
+                            color=TEXT_SECONDARY,
+                        ),
+                    ],
+                ),
+                ft.Row(
+                    spacing=10,
+                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                    controls=[
+                        ft.Text(
+                            formatar_real(item["valor"]),
+                            size=VALUE_SIZE,
+                            weight=ft.FontWeight.W_500,
+                            color=TEXT_PRIMARY,
+                        ),
+                        ft.Checkbox(
+                            value=item.get("pago", False),
+                        ),
+                        ft.IconButton(
+                            icon=ft.Icons.DELETE,
+                            icon_color="red",
+                            tooltip="Excluir",
+                            on_click=lambda e: excluir(item, page, navegar)
+                        ),
+                    ],
+                ),
+            ],
+        ),
+    )
+
+
+
+def excluir(item, page, navegar):
+    excluir_gasto(item["id"])
+
+    page.snack_bar = ft.SnackBar(
+        ft.Text("Conta excluída"),
+        open=True
+    )
+
+    navegar("planejamento")
+
+
+
+# ---------- TELA ----------
+def tela_planejamento(page: ft.Page, navegar, mes_atual):
+    chave_mes = f"{mes_atual['ano']}-{mes_atual['mes']:02d}"
+
+    ano = mes_atual["ano"]
+    mes = mes_atual["mes"]
+
+    itens = buscar_gastos_por_mes(ano, mes)
+
+    entradas = buscar_entradas()
+
+    total_entradas, total_gastos, saldo = calcular_resumo_real(itens, entradas)
+
+    return ft.Column(
+        spacing=16,
+        controls=[
+            ft.Text(
+                f"Planejamento • {mes_formatado(mes_atual)}",
+                size=28,
+                weight=ft.FontWeight.BOLD,
+                color=TEXT_PRIMARY,
+            ),
+
+            card_resumo(total_entradas, total_gastos, saldo),
+
+            *[linha_planejamento(item, page, navegar) for item in itens],
+
+            ft.TextButton(
+                "← Voltar",
+                on_click=lambda e: navegar("home"),
+            ),
+        ],
+    )
