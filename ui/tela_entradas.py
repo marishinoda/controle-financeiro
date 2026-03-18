@@ -1,6 +1,7 @@
 import flet as ft
 from datetime import datetime
-from data.gastos_repo import adicionar_entrada
+from data.gastos_repo import adicionar_entrada, excluir_entrada, buscar_entradas
+from data.gastos_repo import adicionar_entrada, excluir_entrada, buscar_entradas, converter_real_para_float
 
 from ui.layout_base import (
     CARD_BG,
@@ -13,6 +14,7 @@ from ui.layout_base import (
 
 
 def tela_entradas(page: ft.Page, navegar):
+    entradas = buscar_entradas()
 
     # Campos
     descricao = ft.TextField(
@@ -50,8 +52,8 @@ def tela_entradas(page: ft.Page, navegar):
     def salvar_entrada(e):
         try:
             descricao_valor = descricao.value
-            valor_valor = float(valor.value.replace(",", "."))
-            data_valor = data.value
+            valor_valor = converter_real_para_float(valor.value)
+            data_valor = datetime.strptime(data.value, "%d/%m/%Y").strftime("%Y-%m-%d")
 
             adicionar_entrada(descricao_valor, valor_valor, data_valor)
 
@@ -105,6 +107,30 @@ def tela_entradas(page: ft.Page, navegar):
 
             ft.Container(height=10),
 
+            *[
+
+                ft.Row(
+                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+                    controls=[
+                        ft.Text(
+                            f"{item['descricao']} - R$ {item['valor']}",
+                            size=18,
+                            weight=ft.FontWeight.W_500,
+                            color=TEXT_PRIMARY,
+                        ),
+
+                        ft.IconButton(
+                            icon=ft.Icons.DELETE,
+                            icon_color="red",
+                            tooltip="Excluir",
+                            on_click=lambda e, item=item: excluir(item, page, navegar)
+                        ),
+                    ]
+                )
+
+                for item in entradas
+            ],
+
             # Voltar
             ft.TextButton(
                 content=ft.Text("← Voltar", color=TEXT_SECONDARY),
@@ -114,3 +140,14 @@ def tela_entradas(page: ft.Page, navegar):
         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
         spacing=14,
     )
+
+def excluir(item, page, navegar):
+
+    excluir_entrada(item["id"])
+
+    page.snack_bar = ft.SnackBar(
+        ft.Text("Entrada excluída"),
+        open=True
+    )
+
+    navegar("entradas")

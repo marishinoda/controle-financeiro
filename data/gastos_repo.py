@@ -1,5 +1,14 @@
 from data.supabase_client import supabase
 
+def converter_real_para_float(valor_str):
+
+    return float(
+        valor_str
+        .replace("R$", "")
+        .replace(".", "")
+        .replace(",", ".")
+        .strip()
+    )
 
 def buscar_gastos():
     response = (
@@ -41,3 +50,39 @@ def adicionar_entrada(descricao, valor, data):
     )
 
     return response.data
+
+def atualizar_pago(gasto_id, pago):
+
+    response = (
+        supabase
+        .table("gastos")
+        .update({"pago": pago})
+        .eq("id", gasto_id)
+        .execute()
+    )
+
+    return response.data
+
+def excluir_entrada(entrada_id):
+
+    response = (
+        supabase
+        .table("entradas")
+        .delete()
+        .eq("id", entrada_id)
+        .execute()
+    )
+
+    return response.data
+
+def buscar_entradas():
+
+    response = (
+        supabase
+        .table("entradas")
+        .select("*")
+        .order("data")
+        .execute()
+    )
+
+    return response.data or []

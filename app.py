@@ -13,9 +13,15 @@ def main(page: ft.Page):
     page.theme_mode = ft.ThemeMode.DARK
     page.bgcolor = ft.Colors.BLACK
     page.padding = 20
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    page.window_resizable = True
 
     # Container principal
-    conteudo = ft.Column(expand=True)
+    conteudo = ft.Column(
+        expand=True,
+        scroll=ft.ScrollMode.AUTO,
+        horizontal_alignment=ft.CrossAxisAlignment.CENTER
+    )
 
     # Estado global do mês
     mes_atual = {
@@ -66,8 +72,10 @@ def main(page: ft.Page):
     navegar("home")
 
     # Adiciona o container à página
+    page.scroll = ft.ScrollMode.AUTO
+
     page.add(conteudo)
 
 
-# Execução do app (Flet 0.80.x)
-ft.run(main, view=ft.AppView.WEB_BROWSER)
+# Execução do app
+ft.run(main)

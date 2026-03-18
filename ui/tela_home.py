@@ -18,10 +18,11 @@ def mes_formatado(mes_atual):
     ]
     return f"{meses[mes_atual['mes'] - 1]} {mes_atual['ano']}"
 
+def card_home(page, titulo, subtitulo, on_click):
 
-def card_home(titulo, subtitulo, on_click):
+
     return ft.Container(
-        width=320,
+        expand=True,
         bgcolor=CARD_BG,
         border_radius=CARD_RADIUS,
         padding=CARD_PADDING,
@@ -48,6 +49,7 @@ def card_home(titulo, subtitulo, on_click):
 def tela_home(page: ft.Page, navegar, mes_atual):
     return ft.Column(
         spacing=20,
+        scroll=ft.ScrollMode.AUTO,
         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
         controls=[
             # Título
@@ -86,18 +88,21 @@ def tela_home(page: ft.Page, navegar, mes_atual):
 
             # Cards
             card_home(
+                page,
                 "Entradas",
                 "Adicionar valores recebidos",
                 lambda e: navegar("entradas"),
             ),
 
             card_home(
+                page,
                 "Gastos",
                 "Controlar despesas",
                 lambda e: navegar("gastos"),
             ),
 
             card_home(
+                page,
                 "Planejamento",
                 "O que pagar no mês",
                 lambda e: navegar("planejamento"),

@@ -1,5 +1,7 @@
-import flet as ft
+from textwrap import wrap
 
+import flet as ft
+from data.gastos_repo import atualizar_pago
 from data.supabase_client import (
     buscar_entradas,
     buscar_gastos_por_mes,
@@ -72,6 +74,12 @@ def resumo_mes(gastos, entradas):
 def formatar_real(valor):
     return f"R$ {valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
+def marcar_pago(e):
+    item = e.control.data
+    novo_valor = e.control.value
+    item["pago"] = novo_valor
+    atualizar_pago(item["id"], novo_valor)
+
 
 # ---------- COMPONENTES ----------
 def coluna_resumo(titulo, valor):
@@ -92,9 +100,11 @@ def coluna_resumo(titulo, valor):
             ),
             ft.Text(
                 f"R$ {valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."),
-                size=SUMMARY_VALUE_SIZE,
+                size=SUMMARY_VALUE_SIZE - 4,
                 weight=ft.FontWeight.W_600,
                 color=cor,
+                max_lines=1,
+                overflow=ft.TextOverflow.ELLIPSIS,
             ),
         ],
     )
@@ -107,6 +117,7 @@ def card_resumo(total_entradas, total_gastos, saldo):
         padding=20,
         content=ft.Row(
             alignment=ft.MainAxisAlignment.SPACE_AROUND,
+            wrap=True,
             controls=[
                 coluna_resumo("Entradas", total_entradas),
                 coluna_resumo("Gastos", total_gastos),
@@ -152,7 +163,11 @@ def linha_planejamento(item, page, navegar):
                         ),
                         ft.Checkbox(
                             value=item.get("pago", False),
+                            data=item,
+                            on_change=marcar_pago
                         ),
+
+
                         ft.IconButton(
                             icon=ft.Icons.DELETE,
                             icon_color="red",
@@ -194,6 +209,8 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
 
     return ft.Column(
         spacing=16,
+        scroll=ft.ScrollMode.AUTO,
+        expand=True,
         controls=[
             ft.Text(
                 f"Planejamento • {mes_formatado(mes_atual)}",
