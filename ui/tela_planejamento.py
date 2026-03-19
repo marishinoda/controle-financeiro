@@ -130,7 +130,8 @@ def linha_planejamento(item, page, navegar):
     return ft.Container(
         bgcolor=CARD_BG,
         border_radius=CARD_RADIUS,
-        padding=CARD_PADDING,
+        padding=20,
+        margin=ft.margin.only(bottom=10),
         content=ft.Row(
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
             vertical_alignment=ft.CrossAxisAlignment.CENTER,
