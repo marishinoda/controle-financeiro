@@ -153,7 +153,8 @@ def linha_planejamento(item, page, navegar):
                     ],
                 ),
                 ft.Row(
-                    spacing=10,
+                    spacing=6,
+                    tight=True,
                     vertical_alignment=ft.CrossAxisAlignment.CENTER,
                     controls=[
                         ft.Text(
@@ -172,6 +173,7 @@ def linha_planejamento(item, page, navegar):
                         ft.IconButton(
                             icon=ft.Icons.DELETE,
                             icon_color="red",
+                            icon_size=18,
                             tooltip="Excluir",
                             on_click=lambda e: excluir(item, page, navegar)
                         ),
