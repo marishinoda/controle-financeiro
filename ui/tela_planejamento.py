@@ -100,7 +100,7 @@ def coluna_resumo(titulo, valor):
             ),
             ft.Text(
                 f"R$ {valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", "."),
-                size=SUMMARY_VALUE_SIZE - 4,
+                size=18,
                 weight=ft.FontWeight.W_600,
                 color=cor,
                 max_lines=1,
