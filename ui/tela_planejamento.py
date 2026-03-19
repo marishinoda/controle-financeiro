@@ -152,38 +152,37 @@ def linha_planejamento(item, page, navegar):
                         ),
                     ],
                 ),
+
                 ft.Row(
-                    spacing=6,
-                    tight=True,
+                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                     vertical_alignment=ft.CrossAxisAlignment.CENTER,
                     controls=[
                         ft.Text(
                             formatar_real(item["valor"]),
-                            size=VALUE_SIZE,
+                            size=16,
                             weight=ft.FontWeight.W_500,
                             color=TEXT_PRIMARY,
                         ),
-                        ft.Checkbox(
-                            value=item.get("pago", False),
-                            data=item,
-                            on_change=marcar_pago
-                        ),
 
-
-                        ft.IconButton(
-                            icon=ft.Icons.DELETE,
-                            icon_color="red",
-                            icon_size=18,
-                            tooltip="Excluir",
-                            on_click=lambda e: excluir(item, page, navegar)
+                        ft.Row(
+                            spacing=4,
+                            controls=[
+                                ft.Checkbox(
+                                    value=item.get("pago", False),
+                                    data=item,
+                                    on_change=marcar_pago
+                                ),
+                                ft.IconButton(
+                                    icon=ft.Icons.DELETE,
+                                    icon_color="red",
+                                    icon_size=18,
+                                    tooltip="Excluir",
+                                    on_click=lambda e: excluir(item, page, navegar)
+                                ),
+                            ],
                         ),
                     ],
-                ),
-            ],
-        ),
-    )
-
-
+                )
 
 def excluir(item, page, navegar):
     excluir_gasto(item["id"])
