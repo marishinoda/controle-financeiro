@@ -22,7 +22,8 @@ def card_home(page, titulo, subtitulo, on_click):
 
 
     return ft.Container(
-        expand=True,
+        width=300,
+        height=120,
         bgcolor=CARD_BG,
         border_radius=CARD_RADIUS,
         padding=CARD_PADDING,
