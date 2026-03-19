@@ -131,7 +131,7 @@ def linha_planejamento(item, page, navegar):
         bgcolor=CARD_BG,
         border_radius=CARD_RADIUS,
         padding=20,
-        margin=ft.margin.only(bottom=10),
+        margin=ft.margin.only(bottom=20),
         content=ft.Row(
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
             vertical_alignment=ft.CrossAxisAlignment.CENTER,
