@@ -209,7 +209,7 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
     total_entradas, total_gastos, saldo = calcular_resumo_real(itens, entradas)
 
     return ft.Column(
-        spacing=16,
+        spacing=24,
         scroll=ft.ScrollMode.AUTO,
         expand=True,
         controls=[
