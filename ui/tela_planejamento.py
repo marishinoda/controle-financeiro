@@ -132,66 +132,85 @@ def card_resumo(total_entradas, total_gastos, saldo):
     )
 
 def linha_planejamento(item, page, navegar):
-    return ft.Container(
-        bgcolor=CARD_BG,
-        border_radius=CARD_RADIUS,
-        padding=20,
-        margin=ft.margin.only(bottom=20),
-        content=ft.Row(
-            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-            vertical_alignment=ft.CrossAxisAlignment.CENTER,
-            controls=[
-                ft.Column(
-                    spacing=2,
-                    controls=[
-                        ft.Text(
-                            item["descricao"],
-                            size=CARD_TITLE_SIZE,
-                            weight=ft.FontWeight.W_600,
-                            color=TEXT_PRIMARY,
-                        ),
-                        ft.Text(
-                            f"Dia {item['data']}",
-                            size=CARD_SUBTITLE_SIZE,
-                            color=TEXT_SECONDARY,
-                        ),
-                    ],
-                ),
+        from datetime import datetime
 
-                ft.Row(
-                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-                    vertical_alignment=ft.CrossAxisAlignment.CENTER,
-                    controls=[
-                        ft.Text(
-                            formatar_real(item["valor"]),
-                            size=16,
-                            weight=ft.FontWeight.W_500,
-                            color=TEXT_PRIMARY,
-                        ),
+        data_formatada = datetime.strptime(item["data"], "%Y-%m-%d").strftime("%d")
 
-                        ft.Row(
-                            spacing=4,
+        return ft.Container(
+            bgcolor="#ffffff",
+            border_radius=20,
+            padding=15,
+            margin=ft.margin.only(bottom=15),
+
+            content=ft.Row(
+                alignment=ft.MainAxisAlignment.START,
+                vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                spacing=15,
+
+                controls=[
+
+                    # DATA (lado esquerdo)
+                    ft.Text(
+                        data_formatada,
+                        size=20,
+                        weight=ft.FontWeight.BOLD,
+                        color=TEXT_PRIMARY,
+                    ),
+
+                    # BOLINHA (pago ou não)
+                    ft.Container(
+                        width=40,
+                        height=40,
+                        border_radius=20,
+                        bgcolor="#d1fae5" if item.get("pago") else "#fce7f3",
+                        animate=ft.Animation(300, "easeInOut"),
+                        on_click=lambda e: marcar_pago_click(item, page, navegar),
+                        content=ft.Column(
+                            alignment=ft.MainAxisAlignment.CENTER,
+                            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                             controls=[
-                                ft.Checkbox(
-                                    value=item.get("pago", False),
-                                    data=item,
-                                    on_change=marcar_pago
-                                ),
-                                ft.IconButton(
-                                    icon=ft.Icons.DELETE,
-                                    icon_color="red",
-                                    icon_size=18,
-                                    tooltip="Excluir",
-                                    on_click=lambda e: excluir(item, page, navegar)
-                                ),
+                                ft.Text(
+                                    "✓" if item.get("pago") else "",
+                                    size=18,
+                                    color="#059669",
+                                    weight=ft.FontWeight.BOLD,
+                                )
                             ],
                         ),
-                    ],
-                ),
-            ],
-        ),
+                    ),
 
-    )
+                    # TEXTO PRINCIPAL
+                    ft.Column(
+                        expand=True,
+                        spacing=2,
+                        controls=[
+
+                            ft.Text(
+                                item["descricao"],
+                                size=16,
+                                weight=ft.FontWeight.W_600,
+                                color=TEXT_PRIMARY,
+                            ),
+
+                            ft.Text(
+                                f"{formatar_real(item['valor'])} • {'Fixo' if item.get('fixo') else 'Variável'}",
+                                size=13,
+                                color=TEXT_SECONDARY,
+                            ),
+                        ],
+                    ),
+
+                    # LIXEIRA (opcional manter)
+                    ft.IconButton(
+                        icon=ft.Icons.DELETE,
+                        icon_color="#e57373",
+                        icon_size=18,
+                        tooltip="Excluir",
+                        on_click=lambda e: excluir(item, page, navegar)
+                    ),
+                ],
+            ),
+        )
 
 
 def excluir(item, page, navegar):
@@ -204,7 +223,17 @@ def excluir(item, page, navegar):
 
     navegar("planejamento")
 
+def marcar_pago_click(item, page, navegar):
+    novo_valor = not item.get("pago", False)
 
+    atualizar_pago(item["id"], novo_valor)
+
+    page.snack_bar = ft.SnackBar(
+        ft.Text("Atualizado"),
+        open=True
+    )
+
+    navegar("planejamento")
 
 # ---------- TELA ----------
 def tela_planejamento(page: ft.Page, navegar, mes_atual):
