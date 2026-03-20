@@ -112,21 +112,43 @@ def coluna_resumo(titulo, valor):
 
 def card_resumo(total_entradas, total_gastos, saldo):
     return ft.Container(
-        bgcolor=CARD_BG,
+        bgcolor="#ffffff",
         border_radius=20,
         padding=20,
-        shadow=ft.BoxShadow(
-            blur_radius=20,
-            color="#00000055",
-            offset=ft.Offset(0, 6),
-        ),
-        content=ft.Row(
-            alignment=ft.MainAxisAlignment.SPACE_AROUND,
-            wrap=True,
+        margin=ft.margin.only(bottom=10),
+
+        content=ft.Column(
+            spacing=10,
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+
             controls=[
-                coluna_resumo("Entradas", total_entradas),
-                coluna_resumo("Gastos", total_gastos),
-                coluna_resumo("Saldo", saldo),
+
+                ft.Row(
+                    alignment=ft.MainAxisAlignment.SPACE_AROUND,
+                    controls=[
+                        coluna_resumo("Entradas", total_entradas),
+                        coluna_resumo("Gastos", total_gastos),
+                    ],
+                ),
+
+                ft.Divider(height=1, color="#eeeeee"),
+
+                ft.Column(
+                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                    controls=[
+                        ft.Text(
+                            "Saldo",
+                            size=12,
+                            color=TEXT_SECONDARY,
+                        ),
+                        ft.Text(
+                            formatar_real(saldo),
+                            size=22,
+                            weight=ft.FontWeight.BOLD,
+                            color="#6ee7b7" if saldo >= 0 else "#fb7185",
+                        ),
+                    ],
+                ),
             ],
         ),
     )
