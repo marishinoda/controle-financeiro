@@ -118,7 +118,7 @@ def card_resumo(total_entradas, total_gastos, saldo):
         margin=ft.margin.only(bottom=10),
 
         content=ft.Column(
-            spacing=10,
+            spacing=6,
             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
 
             controls=[
@@ -143,7 +143,7 @@ def card_resumo(total_entradas, total_gastos, saldo):
                         ),
                         ft.Text(
                             formatar_real(saldo),
-                            size=22,
+                            size=20,
                             weight=ft.FontWeight.BOLD,
                             color="#6ee7b7" if saldo >= 0 else "#fb7185",
                         ),
