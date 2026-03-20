@@ -113,8 +113,13 @@ def coluna_resumo(titulo, valor):
 def card_resumo(total_entradas, total_gastos, saldo):
     return ft.Container(
         bgcolor=CARD_BG,
-        border_radius=CARD_RADIUS,
+        border_radius=20,
         padding=20,
+        shadow=ft.BoxShadow(
+            blur_radius=20,
+            color="#00000055",
+            offset=ft.Offset(0, 6),
+        ),
         content=ft.Row(
             alignment=ft.MainAxisAlignment.SPACE_AROUND,
             wrap=True,
@@ -182,7 +187,12 @@ def linha_planejamento(item, page, navegar):
                             ],
                         ),
                     ],
-                )
+                ),
+            ],
+        ),
+
+    )
+
 
 def excluir(item, page, navegar):
     excluir_gasto(item["id"])
@@ -198,36 +208,40 @@ def excluir(item, page, navegar):
 
 # ---------- TELA ----------
 def tela_planejamento(page: ft.Page, navegar, mes_atual):
-    chave_mes = f"{mes_atual['ano']}-{mes_atual['mes']:02d}"
-
     ano = mes_atual["ano"]
     mes = mes_atual["mes"]
 
     itens = buscar_gastos_por_mes(ano, mes)
-
     entradas = buscar_entradas()
 
     total_entradas, total_gastos, saldo = calcular_resumo_real(itens, entradas)
 
-    return ft.Column(
-        spacing=24,
-        scroll=ft.ScrollMode.AUTO,
+    return ft.Container(
+        bgcolor="#f5e6ea",
+        padding=20,
         expand=True,
-        controls=[
-            ft.Text(
-                f"Planejamento • {mes_formatado(mes_atual)}",
-                size=28,
-                weight=ft.FontWeight.BOLD,
-                color=TEXT_PRIMARY,
-            ),
+        content=ft.Column(
+            spacing=16,
+            scroll=ft.ScrollMode.AUTO,
+            controls=[
+                ft.Text(
+                    f"Planejamento • {mes_formatado(mes_atual)}",
+                    size=28,
+                    weight=ft.FontWeight.BOLD,
+                    color=TEXT_PRIMARY,
+                ),
 
-            card_resumo(total_entradas, total_gastos, saldo),
+                card_resumo(total_entradas, total_gastos, saldo),
 
-            *[linha_planejamento(item, page, navegar) for item in itens],
+                *[
+                    linha_planejamento(item, page, navegar)
+                    for item in itens
+                ],
 
-            ft.TextButton(
-                "← Voltar",
-                on_click=lambda e: navegar("home"),
-            ),
-        ],
+                ft.TextButton(
+                    "← Voltar",
+                    on_click=lambda e: navegar("home"),
+                ),
+            ],
+        ),
     )

@@ -2,9 +2,9 @@ import flet as ft
 
 # cores
 BG_APP = ft.Colors.BLACK
-CARD_BG = ft.Colors.GREY_900
-TEXT_PRIMARY = ft.Colors.WHITE
-TEXT_SECONDARY = ft.Colors.GREY_300
+CARD_BG = "#f9f5f7"
+TEXT_PRIMARY = "#1f1f1f"
+TEXT_SECONDARY = "#6b6b6b"
 
 # cor de destaque (rosé)
 ACCENT = ft.Colors.PINK_300

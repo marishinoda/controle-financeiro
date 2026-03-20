@@ -11,7 +11,7 @@ def main(page: ft.Page):
     # Configuração básica
     page.title = "Controle Financeiro"
     page.theme_mode = ft.ThemeMode.DARK
-    page.bgcolor = ft.Colors.BLACK
+    page.bgcolor = "#f5e6ea"
     page.padding = 20
     page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
     page.window_resizable = True

@@ -21,8 +21,8 @@ def tela_entradas(page: ft.Page, navegar):
         label="Descrição",
         hint_text="Ex: Salário, Pix, Freelance",
         filled=True,
-        bgcolor=CARD_BG,
-        border_radius=CARD_RADIUS,
+        bgcolor="#ffffff",
+        border_radius=25,
         text_style=ft.TextStyle(color=TEXT_PRIMARY),
         label_style=ft.TextStyle(color=TEXT_SECONDARY),
     )
@@ -32,8 +32,8 @@ def tela_entradas(page: ft.Page, navegar):
         hint_text="R$ 0,00",
         keyboard_type=ft.KeyboardType.NUMBER,
         filled=True,
-        bgcolor=CARD_BG,
-        border_radius=CARD_RADIUS,
+        bgcolor="#ffffff",
+        border_radius=25,
         text_style=ft.TextStyle(color=TEXT_PRIMARY),
         label_style=ft.TextStyle(color=TEXT_SECONDARY),
     )
@@ -42,8 +42,8 @@ def tela_entradas(page: ft.Page, navegar):
         label="Data",
         value=datetime.now().strftime("%d/%m/%Y"),
         filled=True,
-        bgcolor=CARD_BG,
-        border_radius=CARD_RADIUS,
+        bgcolor="#ffffff",
+        border_radius=25,
         text_style=ft.TextStyle(color=TEXT_PRIMARY),
         label_style=ft.TextStyle(color=TEXT_SECONDARY),
     )
@@ -90,13 +90,13 @@ def tela_entradas(page: ft.Page, navegar):
             ft.Container(
                 width=240,
                 height=50,
-                bgcolor=ACCENT,
+                bgcolor="#e75480",
                 border_radius=25,
                 content=ft.Row(
                     controls=[
                         ft.Text(
                             "Salvar entrada",
-                            color=ft.Colors.BLACK,
+                            color="white",
                             weight=ft.FontWeight.BOLD,
                         )
                     ],
