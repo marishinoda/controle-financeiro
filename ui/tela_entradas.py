@@ -12,6 +12,16 @@ from ui.layout_base import (
     CARD_PADDING,
 )
 
+def formatar_digito(valor_str):
+    numeros = "".join(filter(str.isdigit, valor_str))
+
+    if numeros == "":
+        return "R$ 0,00"
+
+    valor = int(numeros) / 100
+
+    return f"R$ {valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
 def formatar_real(valor):
     return f"R$ {valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
@@ -32,11 +42,11 @@ def tela_entradas(page: ft.Page, navegar):
     valor = ft.TextField(
         label="Valor",
         hint_text="R$ 0,00",
-        keyboard_type=ft.KeyboardType.NUMBER,
         filled=True,
         bgcolor="#ffffff",
         border_radius=25,
         text_style=ft.TextStyle(color=TEXT_PRIMARY),
+        on_change=lambda e: atualizar_valor(e),
         label_style=ft.TextStyle(color=TEXT_SECONDARY),
     )
 
@@ -51,6 +61,10 @@ def tela_entradas(page: ft.Page, navegar):
     )
 
     # Função salvar
+     def atualizar_valor(e):
+        e.control.value = formatar_digito(e.control.value)
+        e.control.update()
+
     def salvar_entrada(e):
         try:
             descricao_valor = descricao.value
