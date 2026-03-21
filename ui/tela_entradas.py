@@ -113,7 +113,7 @@ def tela_entradas(page: ft.Page, navegar):
                     alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                     controls=[
                         ft.Text(
-                            f"{item['descricao']} - R$ {item['valor']}",
+                            f"{item['descricao']} - {formatar_real(float(item['valor']))}",
                             size=18,
                             weight=ft.FontWeight.W_500,
                             color=TEXT_PRIMARY,
