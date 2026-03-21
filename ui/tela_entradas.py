@@ -12,6 +12,8 @@ from ui.layout_base import (
     CARD_PADDING,
 )
 
+def formatar_real(valor):
+    return f"R$ {valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
 def tela_entradas(page: ft.Page, navegar):
     entradas = buscar_entradas()
