@@ -61,7 +61,7 @@ def tela_entradas(page: ft.Page, navegar):
     )
 
     # Função salvar
-     def atualizar_valor(e):
+    def atualizar_valor(e):
         e.control.value = formatar_digito(e.control.value)
         e.control.update()
 
