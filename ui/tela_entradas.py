@@ -104,7 +104,7 @@ def tela_entradas(page: ft.Page, navegar):
         controls=[
             # Título
             ft.Text(
-                "Entradas",
+                "Entradas TESTE 💖",
                 size=26,
                 weight=ft.FontWeight.BOLD,
                 color=TEXT_PRIMARY,
