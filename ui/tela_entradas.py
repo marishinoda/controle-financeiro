@@ -144,11 +144,21 @@ def tela_entradas(page: ft.Page, navegar):
                 ft.Row(
                     alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                     controls=[
-                        ft.Text(
-                            f"{item['descricao']} - {formatar_real(float(item['valor']))}",
-                            size=18,
-                            weight=ft.FontWeight.W_500,
-                            color=TEXT_PRIMARY,
+                        ft.Column(
+                            spacing=2,
+                            controls=[
+                                ft.Text(
+                                    item["descricao"],
+                                    size=16,
+                                    weight=ft.FontWeight.W_500,
+                                    color=TEXT_PRIMARY,
+                                ),
+                                ft.Text(
+                                    f"{formatar_real(float(item['valor']))} • {item['data'][8:10]}/{item['data'][5:7]}",
+                                    size=13,
+                                    color=TEXT_SECONDARY,
+                                ),
+                            ],
                         ),
 
                         ft.IconButton(

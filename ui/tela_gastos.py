@@ -63,25 +63,29 @@ def tela_gastos(page: ft.Page, navegar):
     def toggle_fixo(e):
         nonlocal fixo_valor
         fixo_valor = not fixo_valor
-        e.control.content.controls[0].color = "#e75480" if fixo_valor else "#ccc"
-        page.update()
+
+        container = e.control
+        texto = container.content
+
+        container.bgcolor = "#e75480" if fixo_valor else "#ffffff"
+        container.border = ft.border.all(0, "#ffffff") if fixo_valor else ft.border.all(1, "#dddddd")
+
+        texto.color = "white" if fixo_valor else TEXT_PRIMARY
+
+        container.update()
 
     fixo = ft.Container(
         on_click=toggle_fixo,
-        content=ft.Row(
-            spacing=8,
-            controls=[
-                ft.Icon(
-                    icon=ft.Icons.PUSH_PIN,
-                    color="#ccc",
-                ),
-                ft.Text(
-                    "Gasto fixo",
-                    color=TEXT_PRIMARY,
-                    size=14,
-                )
-            ]
-        )
+        bgcolor="#ffffff",
+        border=ft.border.all(1, "#dddddd"),
+        border_radius=20,
+        padding=ft.padding.symmetric(horizontal=16, vertical=8),
+        content=ft.Text(
+            "Gasto fixo",
+            color=TEXT_PRIMARY,
+            size=14,
+            weight=ft.FontWeight.W_500,
+        ),
     )
 
     # Função salvar
@@ -172,7 +176,7 @@ def tela_gastos(page: ft.Page, navegar):
 
             # Voltar
             ft.TextButton(
-                content=ft.Text("← Voltar", color=TEXT_SECONDARY),
+                content=ft.Text("← Voltar", color="#666666"),
                 on_click=lambda e: navegar("home"),
             ),
         ],
