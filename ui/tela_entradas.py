@@ -25,6 +25,21 @@ def formatar_digito(valor_str):
 def formatar_real(valor):
     return f"R$ {valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
+def formatar_data(valor):
+    numeros = "".join(filter(str.isdigit, valor))
+
+    if len(numeros) <= 2:
+        return numeros
+    elif len(numeros) <= 4:
+        return f"{numeros[:2]}/{numeros[2:]}"
+    else:
+        return f"{numeros[:2]}/{numeros[2:4]}/{numeros[4:8]}"
+
+
+def atualizar_data(e):
+    e.control.value = formatar_data(e.control.value)
+    e.control.update()
+
 def tela_entradas(page: ft.Page, navegar):
     entradas = buscar_entradas()
 
@@ -58,6 +73,7 @@ def tela_entradas(page: ft.Page, navegar):
         border_radius=25,
         text_style=ft.TextStyle(color=TEXT_PRIMARY),
         label_style=ft.TextStyle(color=TEXT_SECONDARY),
+        on_change=lambda e: atualizar_data(e),
     )
 
     # Função salvar

@@ -220,7 +220,7 @@ def linha_planejamento(item, page, navegar):
                                     ft.Text(
                                         formatar_real(item["valor"]),
                                         size=18,
-                                        color=TEXT_SECONDARY,
+                                        color="#059669" if item.get("pago") else TEXT_SECONDARY,
                                     ),
 
                                     ft.Container(

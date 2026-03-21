@@ -12,7 +12,19 @@ from ui.layout_base import (
 
 
 def tela_gastos(page: ft.Page, navegar):
+    def formatar_data(valor):
+        numeros = "".join(filter(str.isdigit, valor))
 
+        if len(numeros) <= 2:
+            return numeros
+        elif len(numeros) <= 4:
+            return f"{numeros[:2]}/{numeros[2:]}"
+        else:
+            return f"{numeros[:2]}/{numeros[2:4]}/{numeros[4:8]}"
+
+    def atualizar_data(e):
+        e.control.value = formatar_data(e.control.value)
+        e.control.update()
     # Campos
     descricao = ft.TextField(
         label="Descrição",
@@ -43,12 +55,33 @@ def tela_gastos(page: ft.Page, navegar):
         border_radius=CARD_RADIUS,
         text_style=ft.TextStyle(color=TEXT_PRIMARY),
         label_style=ft.TextStyle(color=TEXT_SECONDARY),
+        on_change=lambda e: atualizar_data(e),
     )
 
-    fixo = ft.Checkbox(
-        label="Fixo",
-        label_style=ft.TextStyle(color=TEXT_PRIMARY),
-        fill_color="#d946ef"
+    fixo_valor = False
+
+    def toggle_fixo(e):
+        nonlocal fixo_valor
+        fixo_valor = not fixo_valor
+        e.control.content.controls[0].color = "#e75480" if fixo_valor else "#ccc"
+        page.update()
+
+    fixo = ft.Container(
+        on_click=toggle_fixo,
+        content=ft.Row(
+            spacing=8,
+            controls=[
+                ft.Icon(
+                    icon=ft.Icons.PUSH_PIN,
+                    color="#ccc",
+                ),
+                ft.Text(
+                    "Gasto fixo",
+                    color=TEXT_PRIMARY,
+                    size=14,
+                )
+            ]
+        )
     )
 
     # Função salvar
@@ -67,13 +100,23 @@ def tela_gastos(page: ft.Page, navegar):
         e.control.value = formatar_digito(e.control.value)
         e.control.update()
 
+    def formatar_data(valor):
+        numeros = "".join(filter(str.isdigit, valor))
+
+        if len(numeros) <= 2:
+            return numeros
+        elif len(numeros) <= 4:
+            return f"{numeros[:2]}/{numeros[2:]}"
+        else:
+            return f"{numeros[:2]}/{numeros[2:4]}/{numeros[4:8]}"
+
     def salvar_gasto(e):
         try:
             descricao_valor = descricao.value
             valor_valor = converter_real_para_float(valor.value)
             data_valor = datetime.strptime(data.value, "%d/%m/%Y").strftime("%Y-%m-%d")
 
-            fixo_valor = fixo.value
+
 
             adicionar_gasto(descricao_valor, valor_valor, data_valor, fixo_valor)
 
