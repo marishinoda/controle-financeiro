@@ -1,8 +1,7 @@
 import flet as ft
 from datetime import datetime
 
-from data.gastos_repo import adicionar_gasto
-
+from data.gastos_repo import adicionar_gasto, converter_real_para_float
 from ui.layout_base import (
     CARD_BG,
     TEXT_PRIMARY,
@@ -46,6 +45,12 @@ def tela_gastos(page: ft.Page, navegar):
         label_style=ft.TextStyle(color=TEXT_SECONDARY),
     )
 
+    fixo = ft.Checkbox(
+        label="Fixo",
+        label_style=ft.TextStyle(color=TEXT_PRIMARY),
+        fill_color="#d946ef"
+    )
+
     # Função salvar
 
     def formatar_digito(valor_str):
@@ -65,10 +70,12 @@ def tela_gastos(page: ft.Page, navegar):
     def salvar_gasto(e):
         try:
             descricao_valor = descricao.value
-            valor_valor = float(valor.value.replace(",", "."))
+            valor_valor = converter_real_para_float(valor.value)
             data_valor = datetime.strptime(data.value, "%d/%m/%Y").strftime("%Y-%m-%d")
 
-            adicionar_gasto(descricao_valor, valor_valor, data_valor)
+            fixo_valor = fixo.value
+
+            adicionar_gasto(descricao_valor, valor_valor, data_valor, fixo_valor)
 
             print("Gasto salvo com sucesso!")
 
@@ -95,6 +102,7 @@ def tela_gastos(page: ft.Page, navegar):
             descricao,
             valor,
             data,
+            fixo,
 
             ft.Container(height=20),
 

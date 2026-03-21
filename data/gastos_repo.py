@@ -21,7 +21,7 @@ def buscar_gastos():
 
     return response.data or []
 
-def adicionar_gasto(descricao, valor, data):
+def adicionar_gasto(descricao, valor, data, fixo):
 
     response = (
         supabase
@@ -29,7 +29,8 @@ def adicionar_gasto(descricao, valor, data):
         .insert({
             "descricao": descricao,
             "valor": valor,
-            "data": data
+            "data": data,
+            "fixo": fixo,
         })
         .execute()
     )

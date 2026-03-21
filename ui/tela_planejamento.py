@@ -214,10 +214,28 @@ def linha_planejamento(item, page, navegar):
                                 color=TEXT_PRIMARY,
                             ),
 
-                            ft.Text(
-                                f"{formatar_real(item['valor'])} • {'Fixo' if item.get('fixo') else 'Variável'}",
-                                size=13,
-                                color=TEXT_SECONDARY,
+                            ft.Row(
+                                spacing=6,
+                                controls=[
+                                    ft.Text(
+                                        formatar_real(item["valor"]),
+                                        size=14,
+                                        color=TEXT_SECONDARY,
+                                    ),
+
+                                    ft.Container(
+                                        content=ft.Text(
+                                            "Fixo",
+                                            size=10,
+                                            color="#065f46",
+                                            weight=ft.FontWeight.BOLD,
+                                        ),
+                                        bgcolor="#d1fae5",
+                                        padding=ft.padding.symmetric(horizontal=8, vertical=2),
+                                        border_radius=10,
+                                        visible=item.get("fixo", False),
+                                    )
+                                ]
                             ),
                         ],
                     ),
