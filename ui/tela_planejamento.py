@@ -219,7 +219,7 @@ def linha_planejamento(item, page, navegar):
                                 controls=[
                                     ft.Text(
                                         formatar_real(item["valor"]),
-                                        size=14,
+                                        size=18,
                                         color=TEXT_SECONDARY,
                                     ),
 
