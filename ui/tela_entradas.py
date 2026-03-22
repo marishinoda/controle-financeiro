@@ -104,7 +104,7 @@ def tela_entradas(page: ft.Page, navegar):
         controls=[
             # Título
             ft.Text(
-                "Entradas TESTE 💖",
+                "Entradas 💰",
                 size=26,
                 weight=ft.FontWeight.BOLD,
                 color=TEXT_PRIMARY,
@@ -155,7 +155,7 @@ def tela_entradas(page: ft.Page, navegar):
                                 ),
                                 ft.Text(
                                     f"{formatar_real(float(item['valor']))} • {item['data'][8:10]}/{item['data'][5:7]}",
-                                    size=13,
+                                    size=14,
                                     color=TEXT_SECONDARY,
                                 ),
                             ],

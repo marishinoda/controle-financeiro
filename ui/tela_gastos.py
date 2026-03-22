@@ -138,7 +138,7 @@ def tela_gastos(page: ft.Page, navegar):
         controls=[
             # Título
             ft.Text(
-                "Gastos", 
+                "Gastos 💸",
                 size=26,
                 weight=ft.FontWeight.BOLD,
                 color=TEXT_PRIMARY,
