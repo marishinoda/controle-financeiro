@@ -287,7 +287,7 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
 
     alertas = [
         item for item in itens
-        if item.get("fixo") and item.get("data") == hoje
+        if item.get("fixo") and item.get("data", "").startswith(hoje)
     ]
     entradas = buscar_entradas()
 
