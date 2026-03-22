@@ -281,6 +281,14 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
     mes = mes_atual["mes"]
 
     itens = buscar_gastos_por_mes(ano, mes)
+    from datetime import datetime
+
+    hoje = datetime.now().strftime("%Y-%m-%d")
+
+    alertas = [
+        item for item in itens
+        if item.get("fixo") and item.get("data") == hoje
+    ]
     entradas = buscar_entradas()
 
     total_entradas, total_gastos, saldo = calcular_resumo_real(itens, entradas)
@@ -293,6 +301,20 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
             spacing=16,
             scroll=ft.ScrollMode.AUTO,
             controls=[
+                *(
+                    [
+                        ft.Container(
+                            bgcolor="#fff3cd",
+                            border_radius=12,
+                            padding=10,
+                            content=ft.Text(
+                                f"⚠️ Você tem {len(alertas)} conta(s) vencendo hoje",
+                                color="#856404",
+                                size=14,
+                            ),
+                        )
+                    ] if alertas else []
+                ),
                 ft.Text(
                     f"Planejamento • {mes_formatado(mes_atual)}",
                     size=28,

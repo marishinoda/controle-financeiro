@@ -155,7 +155,7 @@ def tela_entradas(page: ft.Page, navegar):
                                 ),
                                 ft.Text(
                                     f"{formatar_real(float(item['valor']))} • {item['data'][8:10]}/{item['data'][5:7]}",
-                                    size=14,
+                                    size=16,
                                     color=TEXT_SECONDARY,
                                 ),
                             ],
