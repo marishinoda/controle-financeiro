@@ -30,8 +30,8 @@ def tela_gastos(page: ft.Page, navegar):
         label="Descrição",
         hint_text="Ex: Aluguel, Mercado, Internet",
         filled=True,
-        bgcolor=CARD_BG,
-        border_radius=CARD_RADIUS,
+        bgcolor="#ffffff",
+        border_radius=25,
         text_style=ft.TextStyle(color=TEXT_PRIMARY),
         label_style=ft.TextStyle(color=TEXT_SECONDARY),
     )
@@ -40,19 +40,20 @@ def tela_gastos(page: ft.Page, navegar):
         label="Valor",
         hint_text="R$ 0,00",
         filled=True,
-        bgcolor=CARD_BG,
-        border_radius=CARD_RADIUS,
+        bgcolor="#ffffff",
+        border_radius=25,
         text_style=ft.TextStyle(color=TEXT_PRIMARY),
-        on_change=lambda e: atualizar_valor(e),
         label_style=ft.TextStyle(color=TEXT_SECONDARY),
+        on_change=lambda e: atualizar_valor(e),
     )
+
 
     data = ft.TextField(
         label="Data",
         value=datetime.now().strftime("%d/%m/%Y"),
         filled=True,
-        bgcolor=CARD_BG,
-        border_radius=CARD_RADIUS,
+        bgcolor="#ffffff",
+        border_radius=25,
         text_style=ft.TextStyle(color=TEXT_PRIMARY),
         label_style=ft.TextStyle(color=TEXT_SECONDARY),
         on_change=lambda e: atualizar_data(e),
@@ -65,28 +66,42 @@ def tela_gastos(page: ft.Page, navegar):
         fixo_valor = not fixo_valor
 
         container = e.control
-        texto = container.content
+        row = container.content
+        texto = row.controls[0]
+        icone = row.controls[1]
 
-        container.bgcolor = "#e75480" if fixo_valor else "#ffffff"
-        container.border = ft.border.all(0, "#ffffff") if fixo_valor else ft.border.all(1, "#dddddd")
+        if fixo_valor:
+            container.bgcolor = "#e75480"
 
-        texto.color = "white" if fixo_valor else TEXT_PRIMARY
+            texto.color = "white"
+            icone.color = "white"
+        else:
+            container.bgcolor = "#ffffff"
+            texto.color = TEXT_PRIMARY
+            icone.color = "#cccccc"
 
         container.update()
 
     fixo = ft.Container(
         on_click=toggle_fixo,
-        bgcolor="#ffffff",
-        border=ft.border.all(1, "#dddddd"),
-        border_radius=20,
-        padding=ft.padding.symmetric(horizontal=16, vertical=8),
-        content=ft.Text(
-            "Gasto fixo",
-            color=TEXT_PRIMARY,
-            size=14,
-            weight=ft.FontWeight.W_500,
+        bgcolor="#f1f1f1",
+        border_radius=25,
+        padding=15,
+        width=220,
+        content=ft.Row(
+            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+            controls=[
+                ft.Text(
+                    "Gasto fixo",
+                    color=TEXT_PRIMARY,
+                    size=14,
+                    weight=ft.FontWeight.W_500,
+                ),
+                ft.Icon(ft.Icons.CHECK_CIRCLE, color="#cccccc")
+            ],
         ),
     )
+
 
     # Função salvar
 
@@ -163,7 +178,7 @@ def tela_gastos(page: ft.Page, navegar):
                     controls=[
                         ft.Text(
                             "Salvar gasto",
-                            color=ft.Colors.BLACK,
+                            color="white",
                             weight=ft.FontWeight.BOLD,
                         )
                     ],
@@ -181,5 +196,5 @@ def tela_gastos(page: ft.Page, navegar):
             ),
         ],
         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-        spacing=14,
+        spacing=20,
     )

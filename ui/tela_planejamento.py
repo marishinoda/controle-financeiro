@@ -1,6 +1,9 @@
 from textwrap import wrap
-
 import flet as ft
+from datetime import datetime
+import pytz
+
+hoje = datetime.now(pytz.timezone("America/Manaus")).strftime("%Y-%m-%d")
 from data.gastos_repo import atualizar_pago
 from data.supabase_client import (
     buscar_entradas,
@@ -155,6 +158,7 @@ def card_resumo(total_entradas, total_gastos, saldo):
 
 def linha_planejamento(item, page, navegar):
         from datetime import datetime
+        import pytz
 
         data_formatada = datetime.strptime(item["data"], "%Y-%m-%d").strftime("%d")
 
@@ -276,18 +280,17 @@ def marcar_pago_click(item, page, navegar):
     navegar("planejamento")
 
 # ---------- TELA ----------
+
 def tela_planejamento(page: ft.Page, navegar, mes_atual):
     ano = mes_atual["ano"]
     mes = mes_atual["mes"]
 
     itens = buscar_gastos_por_mes(ano, mes)
-    from datetime import datetime
-
-    hoje = datetime.now().strftime("%Y-%m-%d")
+    hoje = datetime.now(pytz.timezone("America/Manaus")).strftime("%Y-%m-%d")
 
     alertas = [
         item for item in itens
-        if item.get("fixo") and item.get("data", "").startswith(hoje)
+        if item.get("fixo") and not item.get("pago") and item.get("data", "").startswith(hoje)
     ]
     entradas = buscar_entradas()
 
@@ -308,7 +311,7 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
                             border_radius=12,
                             padding=10,
                             content=ft.Text(
-                                f"⚠️ Você tem {len(alertas)} conta(s) vencendo hoje",
+                                f"⚠️ Vence hoje: {len(alertas)} conta(s)",
                                 color="#856404",
                                 size=14,
                             ),
