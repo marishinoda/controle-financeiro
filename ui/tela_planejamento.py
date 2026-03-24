@@ -200,7 +200,7 @@ def linha_planejamento(item, page, navegar):
                                     size=18,
                                     color="#059669",
                                     weight=ft.FontWeight.BOLD,
-                                )
+                                ),
                             ],
                         ),
                     ),
@@ -238,30 +238,33 @@ def linha_planejamento(item, page, navegar):
                                         padding=ft.padding.symmetric(horizontal=8, vertical=2),
                                         border_radius=10,
                                         visible=item.get("fixo", False),
-                                    )
-                                ]
+                                    ),
+                                ],
                             ),
                         ],
                     ),
 
-                    ft.IconButton(
-                        icon=ft.Icons.EDIT,
-                        icon_color="#666666",
-                        tooltip="Editar",
-                        on_click=lambda e, item=item: editar_item(e, item, page, navegar)
-                    ),
-                    # LIXEIRA (opcional manter)
-                    ft.IconButton(
-                        icon=ft.Icons.DELETE,
-                        icon_color="#e57373",
-                        icon_size=18,
-                        tooltip="Excluir",
-                        on_click=lambda e: excluir(item, page, navegar)
-                    ),
+                    ft.Row(
+                        spacing=5,
+                        controls=[
+                            ft.IconButton(
+                                icon=ft.Icons.EDIT,
+                                icon_color="#666666",
+                                tooltip="Editar",
+                                on_click=lambda e, item=item: editar_item(e, item, page, navegar)
+                            ),
+                            ft.IconButton(
+                                icon=ft.Icons.DELETE,
+                                icon_color="#e57373",
+                                icon_size=18,
+                                tooltip="Excluir",
+                                on_click=lambda e: excluir(item, page, navegar)
+                            ),
+                        ],
+                    )
                 ],
             ),
         )
-
 
 def excluir(item, page, navegar):
     excluir_gasto(item["id"])
