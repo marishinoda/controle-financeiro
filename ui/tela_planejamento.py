@@ -244,6 +244,12 @@ def linha_planejamento(item, page, navegar):
                         ],
                     ),
 
+                    ft.IconButton(
+                        icon=ft.Icons.EDIT,
+                        icon_color="#666666",
+                        tooltip="Editar",
+                        on_click=lambda e, item=item: editar_item(e, item, page, navegar)
+                    ),
                     # LIXEIRA (opcional manter)
                     ft.IconButton(
                         icon=ft.Icons.DELETE,
@@ -277,9 +283,81 @@ def marcar_pago_click(item, page, navegar):
         open=True
     )
 
+    page.update()
+
     navegar("planejamento")
 
 # ---------- TELA ----------
+
+def formatar_data(e):
+    numeros = "".join(filter(str.isdigit, e.control.value))
+
+    if len(numeros) <= 2:
+        e.control.value = numeros
+    elif len(numeros) <= 4:
+        e.control.value = f"{numeros[:2]}/{numeros[2:]}"
+    else:
+        e.control.value = f"{numeros[:2]}/{numeros[2:4]}/{numeros[4:8]}"
+
+    e.control.update()
+
+
+def editar_item(e, item, page, navegar):
+
+    from datetime import datetime
+
+    descricao = ft.TextField(value=item["descricao"])
+    valor = ft.TextField(value=f'R$ {item["valor"]:.2f}')
+
+    data_formatada = datetime.strptime(item["data"], "%Y-%m-%d").strftime("%d/%m/%Y")
+
+    data = ft.TextField(
+        value=data_formatada,
+        on_change=lambda e: formatar_data(e)
+    )
+
+    def salvar(e):
+        from data.gastos_repo import atualizar_gasto
+
+        descricao_valor = descricao.value
+        valor_valor = float(
+            valor.value.replace("R$", "").replace(".", "").replace(",", ".")
+        )
+
+        data_valor = datetime.strptime(data.value, "%d/%m/%Y").strftime("%Y-%m-%d")
+
+        atualizar_gasto(
+            item["id"],
+            descricao_valor,
+            valor_valor,
+            data_valor
+        )
+
+        dialog.open = False
+        page.update()
+        navegar("planejamento")
+
+    def fechar(e):
+        dialog.open = False
+        page.update()
+
+    dialog = ft.AlertDialog(
+        modal=True,
+        title=ft.Text("Editar gasto"),
+        content=ft.Column(
+            controls=[descricao, valor, data],
+            tight=True
+        ),
+        actions=[
+            ft.TextButton("Cancelar", on_click=fechar),
+            ft.ElevatedButton("Salvar", on_click=salvar),
+        ],
+    )
+
+    page.overlay.append(dialog)
+    dialog.open = True
+    page.update()
+
 
 def tela_planejamento(page: ft.Page, navegar, mes_atual):
     ano = mes_atual["ano"]
@@ -295,6 +373,8 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
     entradas = buscar_entradas()
 
     total_entradas, total_gastos, saldo = calcular_resumo_real(itens, entradas)
+
+
 
     return ft.Container(
         bgcolor="#f5e6ea",

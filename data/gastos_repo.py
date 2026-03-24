@@ -87,3 +87,12 @@ def buscar_entradas():
     )
 
     return response.data or []
+
+def atualizar_gasto(id, descricao, valor, data):
+    from data.supabase_client import supabase
+
+    supabase.table("gastos").update({
+        "descricao": descricao,
+        "valor": valor,
+        "data": data
+    }).eq("id", id).execute()
