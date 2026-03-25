@@ -207,7 +207,7 @@ def linha_planejamento(item, page, navegar):
 
                     # TEXTO PRINCIPAL
                     ft.Column(
-                        expand=True,
+                        expand=False,
                         spacing=2,
                         controls=[
 
