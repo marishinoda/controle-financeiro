@@ -171,7 +171,7 @@ def linha_planejamento(item, page, navegar):
             content=ft.Row(
                 alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                 vertical_alignment=ft.CrossAxisAlignment.CENTER,
-                spacing=15,
+                spacing=10,
 
                 controls=[
 
@@ -214,6 +214,8 @@ def linha_planejamento(item, page, navegar):
 
                                     ft.Text(
                                         item["descricao"],
+                                        max_lines=1,
+                                        overflow=ft.TextOverflow.ELLIPSIS,
                                         size=16,
                                         weight=ft.FontWeight.W_600,
                                         color=TEXT_PRIMARY,
