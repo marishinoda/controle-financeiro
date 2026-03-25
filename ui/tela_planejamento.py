@@ -169,7 +169,7 @@ def linha_planejamento(item, page, navegar):
             margin=ft.margin.only(bottom=15),
 
             content=ft.Row(
-                alignment=ft.MainAxisAlignment.START,
+                alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                 vertical_alignment=ft.CrossAxisAlignment.CENTER,
                 spacing=15,
 
@@ -245,7 +245,7 @@ def linha_planejamento(item, page, navegar):
                     ),
 
                     ft.Row(
-                        spacing=5,
+                        spacing=2,
                         controls=[
                             ft.IconButton(
                                 icon=ft.Icons.EDIT,
