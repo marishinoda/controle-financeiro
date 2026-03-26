@@ -178,6 +178,7 @@ def linha_planejamento(item, page, navegar):
                     # ESQUERDA (tudo agrupado)
                     ft.Row(
                         spacing=15,
+                        expand=True,
                         controls=[
 
                             ft.Text(
@@ -268,8 +269,8 @@ def linha_planejamento(item, page, navegar):
                             ),
                         ],
                     ),
-                ]
-            )
+                ],
+            ),
         )
 
 
