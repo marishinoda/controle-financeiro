@@ -9,6 +9,7 @@ from data.supabase_client import (
     buscar_entradas,
     buscar_gastos_por_mes,
     excluir_gasto,
+    buscar_gastos_fixos,
 )
 from ui.layout_base import (
     TEXT_PRIMARY,

@@ -46,6 +46,10 @@ def buscar_gastos_por_mes(ano, mes):
 
     return response.data
 
+def buscar_gastos_fixos():
+    response = supabase.table("gastos").select("*").eq("fixo", True).execute()
+    return response.data
+
 def buscar_entradas():
     response = (
         supabase
