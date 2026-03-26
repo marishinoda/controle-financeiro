@@ -96,3 +96,6 @@ def atualizar_gasto(id, descricao, valor, data):
         "valor": valor,
         "data": data
     }).eq("id", id).execute()
+
+def buscar_gastos_fixos():
+    return supabase.table("gastos").select("*").eq("fixo", True).execute().data

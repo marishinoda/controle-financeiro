@@ -242,6 +242,7 @@ def linha_planejamento(item, page, navegar):
                                                 padding=ft.padding.symmetric(horizontal=8, vertical=2),
                                                 border_radius=10,
                                                 visible=item.get("fixo", False),
+                                                margin=ft.margin.only(right=15),
                                             ),
                                         ],
                                     ),
@@ -375,6 +376,20 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
     mes = mes_atual["mes"]
 
     itens = buscar_gastos_por_mes(ano, mes)
+    # buscar gastos fixos de outros meses
+    fixos = buscar_gastos_fixos()
+
+    for fixo in fixos:
+        ja_existe = any(
+            item["descricao"] == fixo["descricao"] and
+            item["data"].startswith(f"{ano}-{mes:02}")
+            for item in itens
+        )
+
+        if not ja_existe:
+            novo = fixo.copy()
+            novo["data"] = f"{ano}-{mes:02}-01"
+            itens.append(novo)
     hoje = datetime.now(pytz.timezone("America/Manaus")).strftime("%Y-%m-%d")
 
     alertas = [
