@@ -253,23 +253,26 @@ def linha_planejamento(item, page, navegar):
                     ),
 
                     # DIREITA (botões juntinhos)
-                    ft.Row(
-                        spacing=2,
-                        controls=[
-                            ft.IconButton(
-                                icon=ft.Icons.EDIT,
-                                icon_color="#666666",
-                                tooltip="Editar",
-                                on_click=lambda e, item=item: editar_item(e, item, page, navegar)
-                            ),
-                            ft.IconButton(
-                                icon=ft.Icons.DELETE,
-                                icon_color="#e57373",
-                                icon_size=18,
-                                tooltip="Excluir",
-                                on_click=lambda e: excluir(item, page, navegar)
-                            ),
-                        ],
+                    ft.Container(
+                        padding=ft.padding.only(right=10),
+                        content=ft.Row(
+                            spacing=2,
+                            controls=[
+                                ft.IconButton(
+                                    icon=ft.Icons.EDIT,
+                                    icon_color="#666666",
+                                    tooltip="Editar",
+                                    on_click=lambda e, item=item: editar_item(e, item, page, navegar)
+                                ),
+                                ft.IconButton(
+                                    icon=ft.Icons.DELETE,
+                                    icon_color="#e57373",
+                                    icon_size=18,
+                                    tooltip="Excluir",
+                                    on_click=lambda e: excluir(item, page, navegar)
+                                ),
+                            ],
+                        ),
                     ),
                 ],
             ),
