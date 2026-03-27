@@ -158,126 +158,111 @@ def card_resumo(total_entradas, total_gastos, saldo):
     )
 
 def linha_planejamento(item, page, navegar):
-        from datetime import datetime
-        import pytz
+    from datetime import datetime
 
-        data_formatada = datetime.strptime(item["data"], "%Y-%m-%d").strftime("%d")
+    data_formatada = datetime.strptime(item["data"], "%Y-%m-%d").strftime("%d")
 
-        return ft.Container(
-            bgcolor="#ffffff",
-            border_radius=20,
-            padding=15,
-            margin=ft.margin.only(bottom=15),
+    return ft.Container(
+        bgcolor="#ffffff",
+        border_radius=20,
+        padding=15,
+        margin=ft.margin.only(bottom=15),
+        content=ft.Row(
+            alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+            vertical_alignment=ft.CrossAxisAlignment.CENTER,
+            controls=[
 
-            content=ft.Row(
-                alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
-                vertical_alignment=ft.CrossAxisAlignment.CENTER,
-                spacing=10,
+                # ESQUERDA
+                ft.Row(
+                    spacing=10,
+                    expand=True,
+                    controls=[
 
-                controls=[
+                        ft.Text(
+                            data_formatada,
+                            size=20,
+                            weight=ft.FontWeight.BOLD,
+                            color=TEXT_PRIMARY,
+                        ),
 
-                    # ESQUERDA (tudo agrupado)
-                    ft.Row(
-                        spacing=15,
-                        expand=True,
-                        controls=[
-
-                            ft.Text(
-                                data_formatada,
-                                size=20,
-                                weight=ft.FontWeight.BOLD,
-                                color=TEXT_PRIMARY,
-                            ),
-
-                            ft.Container(
-                                width=40,
-                                height=40,
-                                border_radius=20,
-                                bgcolor="#d1fae5" if item.get("pago") else "#fce7f3",
-                                animate=ft.Animation(300, "easeInOut"),
-                                on_click=lambda e: marcar_pago_click(item, page, navegar),
-                                content=ft.Column(
-                                    alignment=ft.MainAxisAlignment.CENTER,
-                                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                                    controls=[
-                                        ft.Text(
-                                            "✓" if item.get("pago") else "",
-                                            size=18,
-                                            color="#059669",
-                                            weight=ft.FontWeight.BOLD,
-                                        ),
-                                    ],
-                                ),
-                            ),
-
-                            ft.Column(
-                                spacing=2,
+                        ft.Container(
+                            width=40,
+                            height=40,
+                            border_radius=20,
+                            bgcolor="#d1fae5" if item.get("pago") else "#fce7f3",
+                            on_click=lambda e: marcar_pago_click(item, page, navegar),
+                            content=ft.Column(
+                                alignment=ft.MainAxisAlignment.CENTER,
+                                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                                 controls=[
-
                                     ft.Text(
-                                        item["descricao"],
-                                        max_lines=1,
-                                        overflow=ft.TextOverflow.ELLIPSIS,
-                                        size=16,
-                                        weight=ft.FontWeight.W_600,
-                                        color=TEXT_PRIMARY,
-                                    ),
-
-                                    ft.Row(
-                                        spacing=6,
-                                        controls=[
-                                            ft.Text(
-                                                formatar_real(item["valor"]),
-                                                size=18,
-                                                color="#059669" if item.get("pago") else TEXT_SECONDARY,
-                                            ),
-
-                                            ft.Container(
-                                                content=ft.Text(
-                                                    "Fixo",
-                                                    size=10,
-                                                    color="#065f46",
-                                                    weight=ft.FontWeight.BOLD,
-                                                ),
-                                                bgcolor="#d1fae5",
-                                                padding=ft.padding.symmetric(horizontal=8, vertical=2),
-                                                border_radius=10,
-                                                visible=item.get("fixo", False),
-                                                margin=ft.margin.only(right=15),
-                                            ),
-                                        ],
+                                        "✓" if item.get("pago") else "",
+                                        size=18,
+                                        color="#059669",
+                                        weight=ft.FontWeight.BOLD,
                                     ),
                                 ],
                             ),
-                        ],
-                    ),
+                        ),
 
-                    # DIREITA (botões juntinhos)
-                    ft.Container(
-                        padding=ft.padding.only(right=10),
-                        content=ft.Row(
+                        ft.Column(
                             spacing=2,
                             controls=[
-                                ft.IconButton(
-                                    icon=ft.Icons.EDIT,
-                                    icon_color="#666666",
-                                    tooltip="Editar",
-                                    on_click=lambda e, item=item: editar_item(e, item, page, navegar)
+                                ft.Text(
+                                    item["descricao"],
+                                    max_lines=1,
+                                    overflow=ft.TextOverflow.ELLIPSIS,
+                                    size=16,
+                                    weight=ft.FontWeight.W_600,
+                                    color=TEXT_PRIMARY,
                                 ),
-                                ft.IconButton(
-                                    icon=ft.Icons.DELETE,
-                                    icon_color="#e57373",
-                                    icon_size=18,
-                                    tooltip="Excluir",
-                                    on_click=lambda e: excluir(item, page, navegar)
+                                ft.Row(
+                                    spacing=6,
+                                    controls=[
+                                        ft.Text(
+                                            formatar_real(item["valor"]),
+                                            size=18,
+                                            color="#059669" if item.get("pago") else TEXT_SECONDARY,
+                                        ),
+                                        ft.Container(
+                                            content=ft.Text(
+                                                "Fixo",
+                                                size=10,
+                                                color="#065f46",
+                                                weight=ft.FontWeight.BOLD,
+                                            ),
+                                            bgcolor="#d1fae5",
+                                            padding=ft.padding.symmetric(horizontal=8, vertical=2),
+                                            border_radius=10,
+                                            visible=item.get("fixo", False),
+                                        ),
+                                    ],
                                 ),
                             ],
                         ),
-                    ),
-                ],
-            ),
-        )
+                    ],
+                ),
 
+                # BOTÃO MENU (SEM ERRO, SEM CORTE)
+                ft.PopupMenuButton(
+                    icon=ft.Icons.MORE_VERT,
+                    icon_color="#999999",
+                    items=[
+                        ft.PopupMenuItem(
+                            content=ft.Text("Editar", size=14),
+                            icon=ft.Icons.EDIT,
+                            on_click=lambda e, item=item: editar_item(e, item, page, navegar)
+                        ),
+                        ft.PopupMenuItem(
+                            content=ft.Text("Excluir", size=14),
+                            icon=ft.Icons.DELETE,
+                            on_click=lambda e: excluir(item, page, navegar)
+                        ),
+                    ],
+                ),
+            ],
+        ),
+    )
 
 def excluir(item, page, navegar):
     excluir_gasto(item["id"])
