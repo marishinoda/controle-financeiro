@@ -1,16 +1,18 @@
 import flet as ft
 from datetime import datetime
-from data.gastos_repo import adicionar_entrada, excluir_entrada, buscar_entradas
-from data.gastos_repo import adicionar_entrada, excluir_entrada, buscar_entradas, converter_real_para_float
+
+from data.gastos_repo import (
+    adicionar_entrada,
+    excluir_entrada,
+    buscar_entradas,
+    converter_real_para_float,
+)
 
 from ui.layout_base import (
-    CARD_BG,
     TEXT_PRIMARY,
     TEXT_SECONDARY,
-    ACCENT,
-    CARD_RADIUS,
-    CARD_PADDING,
 )
+
 
 def formatar_digito(valor_str):
     numeros = "".join(filter(str.isdigit, valor_str))
@@ -22,8 +24,6 @@ def formatar_digito(valor_str):
 
     return f"R$ {valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
-def formatar_real(valor):
-    return f"R$ {valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
 def formatar_data(valor):
     numeros = "".join(filter(str.isdigit, valor))
@@ -40,132 +40,50 @@ def atualizar_data(e):
     e.control.value = formatar_data(e.control.value)
     e.control.update()
 
-def tela_entradas(page: ft.Page, navegar):
+
+def tela_entradas(page: ft.Page, navegar, mes_atual):
     entradas = buscar_entradas()
 
-    # Campos
-    descricao = ft.TextField(
-        label="Descrição",
-        hint_text="Ex: Salário, Pix, Freelance",
-        filled=True,
-        bgcolor="#ffffff",
-        border_radius=25,
-        text_style=ft.TextStyle(color=TEXT_PRIMARY),
-        label_style=ft.TextStyle(color=TEXT_SECONDARY),
-    )
+    hoje = datetime.now()
+    data_valor = f"{hoje.day:02}/{mes_atual['mes']:02}/{mes_atual['ano']}"
 
-    valor = ft.TextField(
-        label="Valor",
-        hint_text="R$ 0,00",
-        filled=True,
-        bgcolor="#ffffff",
-        border_radius=25,
-        text_style=ft.TextStyle(color=TEXT_PRIMARY),
-        on_change=lambda e: atualizar_valor(e),
-        label_style=ft.TextStyle(color=TEXT_SECONDARY),
-    )
+    descricao = ft.TextField(label="Descrição")
+    valor = ft.TextField(label="Valor", on_change=lambda e: atualizar_valor(e))
+    data = ft.TextField(label="Data", value=data_valor, on_change=lambda e: atualizar_data(e))
 
-    data = ft.TextField(
-        label="Data",
-        value=datetime.now().strftime("%d/%m/%Y"),
-        filled=True,
-        bgcolor="#ffffff",
-        border_radius=25,
-        text_style=ft.TextStyle(color=TEXT_PRIMARY),
-        label_style=ft.TextStyle(color=TEXT_SECONDARY),
-        on_change=lambda e: atualizar_data(e),
-    )
-
-    # Função salvar
     def atualizar_valor(e):
         e.control.value = formatar_digito(e.control.value)
         e.control.update()
 
     def salvar_entrada(e):
-        try:
-            descricao_valor = descricao.value
-            valor_valor = converter_real_para_float(valor.value)
-            data_valor = datetime.strptime(data.value, "%d/%m/%Y").strftime("%Y-%m-%d")
+        descricao_valor = descricao.value
+        valor_valor = converter_real_para_float(valor.value)
+        data_valor_formatada = datetime.strptime(data.value, "%d/%m/%Y").strftime("%Y-%m-%d")
 
-            adicionar_entrada(descricao_valor, valor_valor, data_valor)
+        adicionar_entrada(descricao_valor, valor_valor, data_valor_formatada)
 
-            print("Entrada salva com sucesso!")
-
-            # limpar campos
-            descricao.value = ""
-            valor.value = ""
-
-            page.update()
-
-        except Exception as erro:
-            print("Erro ao salvar entrada:", erro)
+        descricao.value = ""
+        valor.value = ""
+        page.update()
 
     return ft.Column(
         controls=[
-            # Título
-            ft.Text(
-                "Entradas 💰",
-                size=26,
-                weight=ft.FontWeight.BOLD,
-                color=TEXT_PRIMARY,
-            ),
-
-            ft.Container(height=20),
+            ft.Text("Entradas 💰", size=26),
 
             descricao,
             valor,
             data,
 
-            ft.Container(height=20),
-
-            # Botão salvar
-            ft.Container(
-                width=240,
-                height=50,
-                bgcolor="#e75480",
-                border_radius=25,
-                content=ft.Row(
-                    controls=[
-                        ft.Text(
-                            "Salvar entrada",
-                            color="white",
-                            weight=ft.FontWeight.BOLD,
-                        )
-                    ],
-                    alignment=ft.MainAxisAlignment.CENTER,
-                ),
-                on_click=salvar_entrada,
-            ),
-
-            ft.Container(height=10),
+            ft.ElevatedButton("Salvar entrada", on_click=salvar_entrada),
 
             *[
-
                 ft.Row(
-                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                     controls=[
-                        ft.Column(
-                            spacing=2,
-                            controls=[
-                                ft.Text(
-                                    item["descricao"],
-                                    size=16,
-                                    weight=ft.FontWeight.W_500,
-                                    color=TEXT_PRIMARY,
-                                ),
-                                ft.Text(
-                                    f"{formatar_real(float(item['valor']))} • {item['data'][8:10]}/{item['data'][5:7]}",
-                                    size=16,
-                                    color=TEXT_SECONDARY,
-                                ),
-                            ],
-                        ),
-
+                        ft.Text(item["descricao"]),
+                        ft.Text(item["data"]),
                         ft.IconButton(
                             icon=ft.Icons.DELETE,
-                            icon_color="red",
-                            tooltip="Excluir",
-                            on_click=lambda e, item=item: excluir(item, page, navegar)
+                            on_click=lambda e, item=item: excluir(item, page, navegar),
                         ),
                     ]
                 )
@@ -173,23 +91,23 @@ def tela_entradas(page: ft.Page, navegar):
                 for item in entradas
             ],
 
-            # Voltar
-            ft.TextButton(
-                content=ft.Text("← Voltar", color=TEXT_SECONDARY),
-                on_click=lambda e: navegar("home"),
+            ft.Row(
+                alignment=ft.MainAxisAlignment.CENTER,
+                controls=[
+                    ft.TextButton(
+                        content=ft.Text(
+                            "← Voltar",
+                            color=TEXT_SECONDARY,
+                            size=18,
+                            weight=ft.FontWeight.W_500,
+                        ),
+                        on_click=lambda e: navegar("home"),
+                    ),
+                ],
             ),
-        ],
-        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-        spacing=14,
+        ]
     )
 
 def excluir(item, page, navegar):
-
     excluir_entrada(item["id"])
-
-    page.snack_bar = ft.SnackBar(
-        ft.Text("Entrada excluída"),
-        open=True
-    )
-
     navegar("entradas")
