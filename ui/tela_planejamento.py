@@ -255,12 +255,10 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
                     color=TEXT_PRIMARY,
                 ),
 
-                ft.Row(
-                    alignment=ft.MainAxisAlignment.CENTER,
-                    controls=[
-                        ft.Container(
-                            width=min(page.width * 0.84, 340),
-                            bgcolor="white",
+                ft.Container(
+                    width=min(page.width * 0.84, 340),
+                    alignment=ft.alignment.center,
+                    bgcolor="white",
 
                         border_radius=35,
                         padding=ft.padding.symmetric(horizontal=18, vertical=10),
@@ -281,8 +279,8 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
                                                     weight=ft.FontWeight.BOLD,
                                                     color="#6ee7b7",
                                                 ),
-                                            ],
-                                        ),
+
+
 
                                         ft.Column(
                                             spacing=2,
