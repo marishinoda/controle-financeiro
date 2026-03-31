@@ -255,8 +255,13 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
                     color=TEXT_PRIMARY,
                 ),
 
-                ft.Container(
-                        bgcolor="white",
+                ft.Row(
+                    alignment=ft.MainAxisAlignment.CENTER,
+                    controls=[
+                        ft.Container(
+                            width=min(page.width * 0.92, 380),
+                            bgcolor="white",
+
                         border_radius=30,
                         padding=ft.padding.symmetric(horizontal=20, vertical=18),
                         content=ft.Column(
@@ -269,12 +274,12 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
                                             spacing=2,
                                             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                                             controls=[
-                                                ft.Text("Entradas", size=14, color="#666"),
+                                                ft.Text("Entradas 💰", size=18, color="#6b7280"),
                                                 ft.Text(
                                                     formatar_real(total_entradas),
                                                     size=18,
                                                     weight=ft.FontWeight.BOLD,
-                                                    color="#63d8b4",
+                                                    color="#6ee7b7",
                                                 ),
                                             ],
                                         ),
@@ -283,34 +288,42 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
                                             spacing=2,
                                             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                                             controls=[
-                                                ft.Text("Gastos", size=14, color="#666"),
+                                                ft.Text("Gastos 📉", size=18, color="#6b7280"),
                                                 ft.Text(
                                                     formatar_real(total_gastos),
                                                     size=18,
                                                     weight=ft.FontWeight.BOLD,
-                                                    color="#e76f7a",
+                                                    color="#fca5a5",
                                                 ),
                                             ],
                                         ),
                                     ],
                                 ),
                                 ft.Divider(height=1, color="#dddddd"),
+
+                                ft.Row(
+                                    alignment=ft.MainAxisAlignment.CENTER,
+                                    controls=[
                                 ft.Column(
                                     spacing=2,
                                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                                     controls=[
-                                        ft.Text("Saldo", size=14, color="#666"),
+                                        ft.Text("Saldo 💵", size=18, color="#6b7280"),
                                         ft.Text(
                                             formatar_real(saldo),
-                                            size=20,
+                                            size=18,
                                             weight=ft.FontWeight.BOLD,
-                                            color="#63d8b4" if saldo >= 0 else "#e76f7a",
+                                            color="#6ee7b7" if saldo >= 0 else "#fca5a5",
                                         ),
+                                    ],
+                                ),
                                     ],
                                 ),
                             ],
                         ),
-                    ),
+                        ),
+                    ],
+                ),
 
 
                 *[
