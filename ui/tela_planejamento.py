@@ -287,12 +287,12 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
                                                 spacing=2,
                                                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                                                 controls=[
-                                                    ft.Text("Gastos 📉", size=13, color="#f4a3ad"),
+                                                    ft.Text("Gastos 📉", size=13, color="#6b7280"),
                                                     ft.Text(
                                                         formatar_real(total_gastos),
                                                         size=18,
                                                         weight=ft.FontWeight.BOLD,
-                                                        color="#ef4444",
+                                                        color="#f4a3ad",
                                                     ),
                                                 ],
                                             ),
