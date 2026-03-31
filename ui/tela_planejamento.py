@@ -263,9 +263,9 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
                             bgcolor="white",
 
                         border_radius=30,
-                        padding=ft.padding.symmetric(horizontal=20, vertical=18),
+                        padding=ft.padding.symmetric(horizontal=18, vertical=14),
                         content=ft.Column(
-                            spacing=6,
+                            spacing=4,
                             controls=[
                                 ft.Row(
                                     alignment=ft.MainAxisAlignment.SPACE_AROUND,
@@ -274,7 +274,7 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
                                             spacing=2,
                                             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                                             controls=[
-                                                ft.Text("Entradas 💰", size=18, color="#6b7280"),
+                                                ft.Text("Entradas 💰", size=14, color="#6b7280"),
                                                 ft.Text(
                                                     formatar_real(total_entradas),
                                                     size=18,
@@ -288,7 +288,7 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
                                             spacing=2,
                                             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                                             controls=[
-                                                ft.Text("Gastos 📉", size=18, color="#6b7280"),
+                                                ft.Text("Gastos 📉", size=14, color="#6b7280"),
                                                 ft.Text(
                                                     formatar_real(total_gastos),
                                                     size=18,
@@ -308,7 +308,7 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
                                     spacing=2,
                                     horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                                     controls=[
-                                        ft.Text("Saldo 💵", size=18, color="#6b7280"),
+                                        ft.Text("Saldo 💵", size=14, color="#6b7280"),
                                         ft.Text(
                                             formatar_real(saldo),
                                             size=18,
