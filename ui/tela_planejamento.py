@@ -259,7 +259,7 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
                     alignment=ft.MainAxisAlignment.CENTER,
                     controls=[
                         ft.Container(
-                            width=(page.width * 0.86),
+                            width=min(page.width * 0.84, 340),
                             bgcolor="white",
 
                         border_radius=35,
