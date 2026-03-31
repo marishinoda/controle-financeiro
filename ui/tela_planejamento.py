@@ -260,6 +260,7 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
                     controls=[
                         ft.Container(
                             width=min(page.width * 0.84, 340),
+                            margin=ft.margin.only(left=-8),
                             bgcolor="white",
                             border_radius=35,
                             padding=ft.padding.symmetric(horizontal=18, vertical=10),
@@ -286,7 +287,7 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
                                                 spacing=2,
                                                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                                                 controls=[
-                                                    ft.Text("Gastos 📉", size=13, color="#6b7280"),
+                                                    ft.Text("Gastos 📉", size=13, color="#f4a3ad"),
                                                     ft.Text(
                                                         formatar_real(total_gastos),
                                                         size=18,
