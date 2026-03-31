@@ -255,70 +255,69 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
                     color=TEXT_PRIMARY,
                 ),
 
-                ft.Container(
-                    width=min(page.width * 0.84, 340),
-                    alignment=ft.alignment.center,
-                    bgcolor="white",
-
-                        border_radius=35,
-                        padding=ft.padding.symmetric(horizontal=18, vertical=10),
-                        content=ft.Column(
-                            spacing=2,
-                            controls=[
-                                ft.Row(
-                                    alignment=ft.MainAxisAlignment.SPACE_AROUND,
-                                    controls=[
-                                        ft.Column(
-                                            spacing=2,
-                                            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                                            controls=[
-                                                ft.Text("Entradas 💰", size=13, color="#6b7280"),
-                                                ft.Text(
-                                                    formatar_real(total_entradas),
-                                                    size=18,
-                                                    weight=ft.FontWeight.BOLD,
-                                                    color="#6ee7b7",
-                                                ),
-
-
-
-                                        ft.Column(
-                                            spacing=2,
-                                            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                                            controls=[
-                                                ft.Text("Gastos 📉", size=13, color="#6b7280"),
-                                                ft.Text(
-                                                    formatar_real(total_gastos),
-                                                    size=18,
-                                                    weight=ft.FontWeight.BOLD,
-                                                    color="#fca5a5",
-                                                ),
-                                            ],
-                                        ),
-                                    ],
-                                ),
-                                ft.Divider(height=1, color="#dddddd"),
-
-                                ft.Row(
-                                    alignment=ft.MainAxisAlignment.CENTER,
-                                    controls=[
-                                ft.Column(
-                                    spacing=2,
-                                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                                    controls=[
-                                        ft.Text("Saldo 💵", size=13, color="#6b7280"),
-                                        ft.Text(
-                                            formatar_real(saldo),
-                                            size=18,
-                                            weight=ft.FontWeight.BOLD,
-                                            color="#6ee7b7" if saldo >= 0 else "#fca5a5",
-                                        ),
-                                    ],
-                                ),
-                                    ],
-                                ),
-                            ],
-                        ),
+                ft.Row(
+                    alignment=ft.MainAxisAlignment.CENTER,
+                    controls=[
+                        ft.Container(
+                            width=min(page.width * 0.84, 340),
+                            bgcolor="white",
+                            border_radius=35,
+                            padding=ft.padding.symmetric(horizontal=18, vertical=10),
+                            content=ft.Column(
+                                spacing=4,
+                                controls=[
+                                    ft.Row(
+                                        alignment=ft.MainAxisAlignment.SPACE_AROUND,
+                                        controls=[
+                                            ft.Column(
+                                                spacing=2,
+                                                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                                                controls=[
+                                                    ft.Text("Entradas 💰", size=13, color="#6b7280"),
+                                                    ft.Text(
+                                                        formatar_real(total_entradas),
+                                                        size=18,
+                                                        weight=ft.FontWeight.BOLD,
+                                                        color="#63d8b4",
+                                                    ),
+                                                ],
+                                            ),
+                                            ft.Column(
+                                                spacing=2,
+                                                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                                                controls=[
+                                                    ft.Text("Gastos 📉", size=13, color="#6b7280"),
+                                                    ft.Text(
+                                                        formatar_real(total_gastos),
+                                                        size=18,
+                                                        weight=ft.FontWeight.BOLD,
+                                                        color="#ef4444",
+                                                    ),
+                                                ],
+                                            ),
+                                        ],
+                                    ),
+                                    ft.Divider(height=1, color="#dddddd"),
+                                    ft.Row(
+                                        alignment=ft.MainAxisAlignment.CENTER,
+                                        controls=[
+                                            ft.Column(
+                                                spacing=1,
+                                                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                                                controls=[
+                                                    ft.Text("Saldo 💵", size=13, color="#6b7280"),
+                                                    ft.Text(
+                                                        formatar_real(saldo),
+                                                        size=17,
+                                                        weight=ft.FontWeight.BOLD,
+                                                        color="#63d8b4" if saldo >= 0 else "#e76f7a",
+                                                    ),
+                                                ],
+                                            ),
+                                        ],
+                                    ),
+                                ],
+                            ),
                         ),
                     ],
                 ),
