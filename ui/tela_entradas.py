@@ -11,6 +11,7 @@ from data.gastos_repo import (
 from ui.layout_base import (
     TEXT_PRIMARY,
     TEXT_SECONDARY,
+    ACCENT,
 )
 
 
@@ -47,9 +48,37 @@ def tela_entradas(page: ft.Page, navegar, mes_atual):
     hoje = datetime.now()
     data_valor = f"{hoje.day:02}/{mes_atual['mes']:02}/{mes_atual['ano']}"
 
-    descricao = ft.TextField(label="Descrição")
-    valor = ft.TextField(label="Valor", on_change=lambda e: atualizar_valor(e))
-    data = ft.TextField(label="Data", value=data_valor, on_change=lambda e: atualizar_data(e))
+    descricao = ft.TextField(
+        label="Descrição",
+        hint_text="Ex: Salário, Pix, Venda",
+        filled=True,
+        bgcolor="#ffffff",
+        border_radius=25,
+        text_style=ft.TextStyle(color=TEXT_PRIMARY),
+        label_style=ft.TextStyle(color=TEXT_SECONDARY),
+    )
+
+    valor = ft.TextField(
+        label="Valor",
+        hint_text="R$ 0,00",
+        filled=True,
+        bgcolor="#ffffff",
+        border_radius=25,
+        text_style=ft.TextStyle(color=TEXT_PRIMARY),
+        label_style=ft.TextStyle(color=TEXT_SECONDARY),
+        on_change=lambda e: atualizar_valor(e),
+    )
+
+    data = ft.TextField(
+        label="Data",
+        value=data_valor,
+        filled=True,
+        bgcolor="#ffffff",
+        border_radius=25,
+        text_style=ft.TextStyle(color=TEXT_PRIMARY),
+        label_style=ft.TextStyle(color=TEXT_SECONDARY),
+        on_change=lambda e: atualizar_data(e),
+    )
 
     def atualizar_valor(e):
         e.control.value = formatar_digito(e.control.value)
@@ -58,9 +87,15 @@ def tela_entradas(page: ft.Page, navegar, mes_atual):
     def salvar_entrada(e):
         descricao_valor = descricao.value
         valor_valor = converter_real_para_float(valor.value)
-        data_valor_formatada = datetime.strptime(data.value, "%d/%m/%Y").strftime("%Y-%m-%d")
+        data_valor_formatada = datetime.strptime(
+            data.value, "%d/%m/%Y"
+        ).strftime("%Y-%m-%d")
 
-        adicionar_entrada(descricao_valor, valor_valor, data_valor_formatada)
+        adicionar_entrada(
+            descricao_valor,
+            valor_valor,
+            data_valor_formatada
+        )
 
         descricao.value = ""
         valor.value = ""
@@ -68,28 +103,78 @@ def tela_entradas(page: ft.Page, navegar, mes_atual):
 
     return ft.Column(
         controls=[
-            ft.Text("Entradas 💰", size=26),
+            ft.Text(
+                "Entradas 💰",
+                size=26,
+                weight=ft.FontWeight.BOLD,
+                color=TEXT_PRIMARY,
+            ),
+
+            ft.Container(height=20),
 
             descricao,
             valor,
             data,
 
-            ft.ElevatedButton("Salvar entrada", on_click=salvar_entrada),
+            ft.Container(height=20),
+
+            ft.Container(
+                width=240,
+                height=50,
+                bgcolor=ACCENT,
+                border_radius=25,
+                content=ft.Row(
+                    controls=[
+                        ft.Text(
+                            "Salvar entrada",
+                            color="white",
+                            weight=ft.FontWeight.BOLD,
+                        )
+                    ],
+                    alignment=ft.MainAxisAlignment.CENTER,
+                ),
+                on_click=salvar_entrada,
+            ),
 
             *[
                 ft.Row(
+                    alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
                     controls=[
-                        ft.Text(item["descricao"]),
-                        ft.Text(item["data"]),
+                        ft.Column(
+                            spacing=2,
+                            controls=[
+                                ft.Text(
+                                    item["descricao"],
+                                    color=TEXT_PRIMARY,
+                                    size=18,
+                                    weight=ft.FontWeight.BOLD,
+                                ),
+
+                                ft.Text(
+                                    formatar_digito(str(int(item["valor"] * 100))),
+                                    color="#0f9d7a",
+                                    size=18,
+                                    weight=ft.FontWeight.W_500,
+                                ),
+
+                                ft.Text(
+                                    datetime.strptime(item["data"], "%Y-%m-%d").strftime("%d/%m/%Y"),
+                                    color=TEXT_SECONDARY,
+                                    size=14,
+                                )
+                            ],
+                        ),
                         ft.IconButton(
                             icon=ft.Icons.DELETE,
+                            icon_color="#e9a0aa",
                             on_click=lambda e, item=item: excluir(item, page, navegar),
                         ),
                     ]
                 )
-
                 for item in entradas
             ],
+
+            ft.Container(height=10),
 
             ft.Row(
                 alignment=ft.MainAxisAlignment.CENTER,
@@ -105,7 +190,9 @@ def tela_entradas(page: ft.Page, navegar, mes_atual):
                     ),
                 ],
             ),
-        ]
+        ],
+        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        spacing=20,
     )
 
 def excluir(item, page, navegar):
