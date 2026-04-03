@@ -43,7 +43,11 @@ def atualizar_data(e):
 
 
 def tela_entradas(page: ft.Page, navegar, mes_atual):
-    entradas = buscar_entradas()
+    entradas = [
+        item for item in buscar_entradas()
+        if datetime.strptime(item["data"], "%Y-%m-%d").month == mes_atual["mes"]
+           and datetime.strptime(item["data"], "%Y-%m-%d").year == mes_atual["ano"]
+    ]
 
     hoje = datetime.now()
     data_valor = f"{hoje.day:02}/{mes_atual['mes']:02}/{mes_atual['ano']}"
@@ -99,7 +103,7 @@ def tela_entradas(page: ft.Page, navegar, mes_atual):
 
         descricao.value = ""
         valor.value = ""
-        page.update()
+        navegar("entradas")
 
     return ft.Column(
         controls=[

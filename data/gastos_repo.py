@@ -52,13 +52,14 @@ def adicionar_entrada(descricao, valor, data):
 
     return response.data
 
-def atualizar_pago(gasto_id, pago):
+def atualizar_pago(gasto_id, pago, data):
 
     response = (
         supabase
         .table("gastos")
         .update({"pago": pago})
         .eq("id", gasto_id)
+        .eq("data", data)
         .execute()
     )
 

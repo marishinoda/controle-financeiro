@@ -53,17 +53,20 @@ def formatar_real(valor):
     return f"R$ {valor:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
 
 
-def marcar_pago_click(item, page, navegar):
+def marcar_pago_click(item, page, navegar, mes_atual):
     novo_valor = not item.get("pago", False)
 
-    atualizar_pago(item["id"], novo_valor)
+    atualizar_pago(
+        item["id"],
+        novo_valor,
+        item["data"],
+    )
 
     page.snack_bar = ft.SnackBar(
         ft.Text("Atualizado"),
         open=True
     )
 
-    page.update()
     navegar("planejamento")
 
 
@@ -79,7 +82,7 @@ def excluir(item, page, navegar):
 
 
 # ---------- COMPONENTE ITEM ----------
-def linha_planejamento(item, page, navegar):
+def linha_planejamento(item, page, navegar, mes_atual):
     data_formatada = datetime.strptime(item["data"], "%Y-%m-%d").strftime("%d")
 
     return ft.Container(
@@ -109,7 +112,7 @@ def linha_planejamento(item, page, navegar):
                             height=40,
                             border_radius=20,
                             bgcolor="#d1fae5" if item.get("pago") else "#fce7f3",
-                            on_click=lambda e: marcar_pago_click(item, page, navegar),
+                            on_click=lambda e: marcar_pago_click(item, page, navegar, mes_atual),
                             content=ft.Column(
                                 alignment=ft.MainAxisAlignment.CENTER,
                                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
@@ -325,7 +328,7 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
 
 
                 *[
-                    linha_planejamento(item, page, navegar)
+                    linha_planejamento(item, page, navegar, mes_atual)
                     for item in itens
                 ],
                 ft.Row(
