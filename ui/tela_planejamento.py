@@ -201,6 +201,7 @@ def linha_planejamento(item, page, navegar, mes_atual):
                         ),
 
                         ft.Column(
+                            expand=True,
                             spacing=2,
                             controls=[
                                 ft.Text(
