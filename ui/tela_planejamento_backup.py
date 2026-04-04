@@ -186,6 +186,9 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
     mes = mes_atual["mes"]
 
     itens = buscar_gastos_por_mes(ano, mes)
+    agora_manaus = datetime.now(
+        pytz.timezone("America/Manaus")
+    )
 
     fixos = [
         f for f in buscar_gastos_fixos()
@@ -199,8 +202,12 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
             for item in itens
         )
 
-        if not ja_existe:
-            novo = fixo.copy()
+        if (
+                not ja_existe
+                and ano == agora_manaus.year
+                and mes == agora_manaus.month
+        ):
+
 
             dia_original = int(fixo["data"].split("-")[2])
             ultimo_dia = calendar.monthrange(ano, mes)[1]

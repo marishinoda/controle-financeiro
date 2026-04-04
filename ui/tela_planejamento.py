@@ -4,7 +4,7 @@ from datetime import datetime
 import pytz
 import calendar
 
-from data.gastos_repo import atualizar_pago
+from data.gastos_repo import atualizar_pago, adicionar_gasto, atualizar_gasto
 from data.supabase_client import (
     buscar_entradas,
     buscar_gastos_por_mes,
@@ -41,6 +41,11 @@ def valor_para_float(valor_str):
         .strip()
     )
 
+def hoje_manaus():
+    return datetime.now(
+        pytz.timezone("America/Manaus")
+    )
+
 
 def calcular_resumo_real(gastos, entradas):
     total_gastos = sum(float(g["valor"]) for g in gastos) if gastos else 0
@@ -56,11 +61,20 @@ def formatar_real(valor):
 def marcar_pago_click(item, page, navegar, mes_atual):
     novo_valor = not item.get("pago", False)
 
-    atualizar_pago(
+    atualizado = atualizar_pago(
         item["id"],
         novo_valor,
         item["data"],
     )
+
+    if not atualizado:
+        adicionar_gasto(
+            item["descricao"],
+            item["valor"],
+            item["data"],
+            item.get("fixo", False),
+            novo_valor,
+        )
 
     page.snack_bar = ft.SnackBar(
         ft.Text("Atualizado"),
@@ -79,6 +93,65 @@ def excluir(item, page, navegar):
     )
 
     navegar("planejamento")
+
+
+def editar_gasto(item, page, navegar):
+    descricao = ft.TextField(
+        label="Descrição",
+        value=item["descricao"],
+        border_radius=20,
+    )
+
+    valor = ft.TextField(
+        label="Valor",
+        value=str(item["valor"]).replace(".", ","),
+        border_radius=20,
+    )
+
+    def salvar_edicao(e):
+        novo_valor = valor_para_float(valor.value)
+
+        atualizar_gasto(
+            item["id"],
+            descricao.value,
+            novo_valor,
+            item["data"],
+        )
+
+        page.pop_dialog()
+
+        page.snack_bar = ft.SnackBar(
+            ft.Text("Edição salva"),
+            open=True
+        )
+
+        navegar("planejamento")
+
+    dialog = ft.AlertDialog(
+        modal=True,
+        title=ft.Text("Editar gasto"),
+        content=ft.Column(
+            tight=True,
+            controls=[descricao, valor],
+        ),
+        actions=[
+            ft.TextButton(
+                "Cancelar",
+                on_click=lambda e: page.pop_dialog()
+            ),
+            ft.ElevatedButton(
+                "Salvar",
+                on_click=salvar_edicao
+            ),
+        ],
+    )
+
+    page.show_dialog(dialog)
+
+def fechar_modal(e):
+    e.page.dialog.open = False
+    e.page.update()
+
 
 
 # ---------- COMPONENTE ITEM ----------
@@ -162,25 +235,27 @@ def linha_planejamento(item, page, navegar, mes_atual):
                                 ),
                             ],
                         ),
-                    ],
-                ),
 
-                ft.PopupMenuButton(
-                    icon=ft.Icons.MORE_VERT,
-                    icon_color="#999999",
-                    items=[
-                        ft.PopupMenuItem(
-                            content=ft.Text("Editar"),
-                        ),
-                        ft.PopupMenuItem(
-                            content=ft.Text("Excluir"),
-                            on_click=lambda e: excluir(item, page, navegar)
+                        ft.PopupMenuButton(
+                            icon=ft.Icons.MORE_VERT,
+                            icon_color="#999999",
+                            items=[
+                                ft.PopupMenuItem(
+                                    content=ft.Text("Editar"),
+                                    on_click=lambda e, item=item: editar_gasto(item, page, navegar),
+                                ),
+                                ft.PopupMenuItem(
+                                    content=ft.Text("Excluir"),
+                                    on_click=lambda e, item=item: excluir(item, page, navegar),
+                                ),
+                            ],
                         ),
                     ],
                 ),
             ],
         ),
     )
+
 
 
 # ---------- TELA PRINCIPAL ----------
@@ -202,19 +277,29 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
             for item in itens
         )
 
-        if not ja_existe:
-            novo = fixo.copy()
-
+        if (
+                not ja_existe
+                and ano == hoje_manaus().year
+                and mes == hoje_manaus().month
+        ):
+            fixo["pago"] = False
             dia_original = int(fixo["data"].split("-")[2])
             ultimo_dia = calendar.monthrange(ano, mes)[1]
             dia_final = min(dia_original, ultimo_dia)
 
-            novo["data"] = f"{ano}-{mes:02}-{dia_final:02}"
-            itens.append(novo)
+            nova_data = f"{ano}-{mes:02}-{dia_final:02}"
+
+            adicionar_gasto(
+                fixo["descricao"],
+                fixo["valor"],
+                nova_data,
+                True,
+                False,
+            )
 
     itens.sort(key=lambda x: x["data"])
 
-    hoje = datetime.now(pytz.timezone("America/Manaus")).strftime("%Y-%m-%d")
+    hoje = hoje_manaus().strftime("%Y-%m-%d")
 
     alertas = [
         item for item in itens
