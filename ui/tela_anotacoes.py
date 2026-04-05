@@ -48,43 +48,62 @@ def tela_anotacoes(page: ft.Page, navegar, mes_atual):
                     padding=20,
                     content=campo_texto,
                 ),
-                ft.Container(
-                    width=140,
-                    height=48,
-                    bgcolor="#eb5c8c",
-                    border_radius=30,
-                    alignment=ft.Alignment(0, 0),
-                    on_click=salvar,
-                    content=ft.Text(
-                        "Salvar",
-                        size=16,
-                        weight=ft.FontWeight.BOLD,
-                        color="white",
-                    ),
-                ),
 
                 ft.Container(
-                    bgcolor="#f3e8ed",
-                    border_radius=30,
-                    padding=ft.padding.symmetric(horizontal=24, vertical=12),
-                    on_click=lambda e: navegar("home"),
-                    content=ft.Row(
-                        tight=True,
-                        spacing=8,
+                    width=float("inf"),
+                    alignment=ft.Alignment(0, 0),
+                    content=ft.Column(
+                        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                        spacing=16,
                         controls=[
-                            ft.Icon(
-                                ft.Icons.ARROW_BACK,
-                                color="#6b6b6b",
+                            ft.Container(
+                                width=120,
+                                height=44,
+                                bgcolor="#eb5c8c",
+                                border_radius=30,
+                                alignment=ft.Alignment(0, 0),
+                                on_click=salvar,
+                                content=ft.Text(
+                                    "Salvar",
+                                    size=16,
+                                    weight=ft.FontWeight.BOLD,
+                                    color="white",
+                                ),
                             ),
-                            ft.Text(
-                                "Voltar",
-                                size=16,
-                                weight=ft.FontWeight.W_600,
-                                color="#6b6b6b",
+
+                            ft.Container(
+                                bgcolor="#f3e8ed",
+                                border_radius=30,
+                                padding=ft.padding.symmetric(horizontal=24, vertical=12),
+                                on_click=lambda e: navegar("home"),
+                                content=ft.Row(
+                                    tight=True,
+                                    spacing=8,
+                                    controls=[
+                                        ft.Icon(
+                                            ft.Icons.ARROW_BACK,
+                                            color="#6b6b6b",
+                                        ),
+                                        ft.Text(
+                                            "Voltar",
+                                            size=16,
+                                            weight=ft.FontWeight.W_600,
+                                            color="#6b6b6b",
+                                        ),
+                                    ],
+                                ),
                             ),
                         ],
                     ),
                 ),
-            ],
+            ]
         ),
     )
+
+
+
+
+
+
+
+
