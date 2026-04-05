@@ -5,6 +5,7 @@ from ui.tela_home import tela_home
 from ui.tela_entradas import tela_entradas
 from ui.tela_gastos import tela_gastos
 from ui.tela_planejamento import tela_planejamento
+from ui.tela_anotacoes import tela_anotacoes
 
 
 def main(page: ft.Page):
@@ -64,6 +65,11 @@ def main(page: ft.Page):
         elif destino == "planejamento":
             conteudo.controls.append(
                 tela_planejamento(page, navegar, mes_atual)
+            )
+
+        elif destino == "anotacoes":
+            conteudo.controls.append(
+                tela_anotacoes(page, navegar, mes_atual)
             )
 
         page.update()

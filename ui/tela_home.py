@@ -108,5 +108,12 @@ def tela_home(page: ft.Page, navegar, mes_atual):
                 "O que pagar no mês",
                 lambda e: navegar("planejamento"),
             ),
+            card_home(
+                page,
+                "Anotações",
+                "Metas e lembretes do mês",
+                lambda e: navegar("anotacoes"),
+            ),
         ],
     )
+
