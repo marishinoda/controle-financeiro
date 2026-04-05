@@ -12,7 +12,8 @@ from ui.layout_base import (
 )
 
 
-def tela_gastos(page: ft.Page, navegar):
+def tela_gastos(page: ft.Page, navegar, mes_atual):
+    container = ft.Container()
     def formatar_data(valor):
         numeros = "".join(filter(str.isdigit, valor))
 
@@ -48,12 +49,12 @@ def tela_gastos(page: ft.Page, navegar):
         on_change=lambda e: atualizar_valor(e),
     )
 
+    hoje = datetime.now(pytz.timezone("America/Manaus"))
+    data_valor = f"{hoje.day:02}/{mes_atual['mes']:02}/{mes_atual['ano']}"
 
     data = ft.TextField(
         label="Data",
-        value=datetime.now(
-            pytz.timezone("America/Manaus")
-        ).strftime("%d/%m/%Y"),
+        value=data_valor,
         filled=True,
         bgcolor="#ffffff",
         border_radius=25,

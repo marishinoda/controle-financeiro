@@ -62,7 +62,7 @@ def main(page: ft.Page):
 
         elif destino == "gastos":
             conteudo.controls.append(
-                tela_gastos(page, navegar)
+                tela_gastos(page, navegar, mes_atual)
             )
 
         elif destino == "planejamento":
