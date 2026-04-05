@@ -1,5 +1,6 @@
 import flet as ft
 from datetime import datetime
+import pytz
 
 from ui.tela_home import tela_home
 from ui.tela_entradas import tela_entradas
@@ -25,9 +26,11 @@ def main(page: ft.Page):
     )
 
     # Estado global do mês
+    agora = datetime.now(pytz.timezone("America/Manaus"))
+
     mes_atual = {
-        "ano": datetime.now().year,
-        "mes": datetime.now().month,
+        "ano": agora.year,
+        "mes": agora.month,
     }
 
     def navegar(destino: str, direcao_mes: int = 0):

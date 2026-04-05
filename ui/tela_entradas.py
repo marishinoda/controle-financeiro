@@ -1,5 +1,6 @@
 import flet as ft
 from datetime import datetime
+import pytz
 
 from data.gastos_repo import (
     adicionar_entrada,
@@ -49,7 +50,7 @@ def tela_entradas(page: ft.Page, navegar, mes_atual):
            and datetime.strptime(item["data"], "%Y-%m-%d").year == mes_atual["ano"]
     ]
 
-    hoje = datetime.now()
+    hoje = datetime.now(pytz.timezone("America/Manaus"))
     data_valor = f"{hoje.day:02}/{mes_atual['mes']:02}/{mes_atual['ano']}"
 
     descricao = ft.TextField(

@@ -1,5 +1,6 @@
 import flet as ft
 from datetime import datetime
+import pytz
 
 from data.gastos_repo import adicionar_gasto, converter_real_para_float
 from ui.layout_base import (
@@ -50,7 +51,9 @@ def tela_gastos(page: ft.Page, navegar):
 
     data = ft.TextField(
         label="Data",
-        value=datetime.now().strftime("%d/%m/%Y"),
+        value=datetime.now(
+            pytz.timezone("America/Manaus")
+        ).strftime("%d/%m/%Y"),
         filled=True,
         bgcolor="#ffffff",
         border_radius=25,
