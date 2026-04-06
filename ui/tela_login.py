@@ -107,9 +107,9 @@ def tela_login(page: ft.Page, navegar):
 
                 ft.Container(
                     width=220,
-                    height=52,
+                    height=48,
                     bgcolor="#dbeafe",
-                    border_radius=30,
+                    border_radius=28,
                     alignment=ft.Alignment(0, 0),
                     on_click=criar_conta,
                     content=ft.Text(
