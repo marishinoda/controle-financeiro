@@ -105,11 +105,18 @@ def tela_login(page: ft.Page, navegar):
                     ),
                 ),
 
-                ft.TextButton(
-                    "Criar conta",
+                ft.Container(
+                    width=220,
+                    height=52,
+                    bgcolor="#dbeafe",
+                    border_radius=30,
+                    alignment=ft.Alignment(0, 0),
                     on_click=criar_conta,
-                    style=ft.ButtonStyle(
-                        color="#eb5c8c",
+                    content=ft.Text(
+                        "Criar conta",
+                        size=18,
+                        weight=ft.FontWeight.W_600,
+                        color="#60a5fa",
                     ),
                 ),
             ],
