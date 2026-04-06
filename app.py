@@ -7,6 +7,8 @@ from ui.tela_entradas import tela_entradas
 from ui.tela_gastos import tela_gastos
 from ui.tela_planejamento import tela_planejamento
 from ui.tela_anotacoes import tela_anotacoes
+from ui.tela_home import tela_home
+from ui.tela_login import tela_login
 
 
 def main(page: ft.Page):
@@ -49,8 +51,13 @@ def main(page: ft.Page):
         # Limpa a tela
         conteudo.controls.clear()
 
+        if destino == "login":
+            conteudo.controls.append(
+                tela_login(page, navegar)
+            )
+
+        elif destino == "home":
         # Decide qual tela mostrar
-        if destino == "home":
             conteudo.controls.append(
                 tela_home(page, navegar, mes_atual)
             )
@@ -77,8 +84,9 @@ def main(page: ft.Page):
 
         page.update()
 
-    # Inicializa o app na Home
-    navegar("home")
+    # Inicializa o app no Login
+    navegar("login")
+
 
     # Adiciona o container à página
     page.scroll = ft.ScrollMode.AUTO

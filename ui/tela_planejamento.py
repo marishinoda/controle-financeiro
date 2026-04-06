@@ -266,30 +266,30 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
 
     itens = buscar_gastos_por_mes(ano, mes)
 
-    fixos = [
-        f for f in buscar_gastos_fixos()
-        if f["data"] <= f"{ano}-{mes:02}-31"
-    ]
+    fixos = buscar_gastos_fixos()
+
+    fixos_unicos = {}
+    for f in fixos:
+        chave = (f["descricao"], float(f["valor"]))
+        if chave not in fixos_unicos:
+            fixos_unicos[chave] = f
+
+    fixos = list(fixos_unicos.values())
 
     for fixo in fixos:
+        dia_original = int(fixo["data"].split("-")[2])
+        ultimo_dia = calendar.monthrange(ano, mes)[1]
+        dia_final = min(dia_original, ultimo_dia)
+
+        nova_data = f"{ano}-{mes:02}-{dia_final:02}"
+
         ja_existe = any(
-            item["descricao"] == fixo["descricao"] and
-            item["data"].startswith(f"{ano}-{mes:02}")
+            item["descricao"] == fixo["descricao"]
+            and item["data"] == nova_data
             for item in itens
         )
 
-        if (
-                not ja_existe
-                and ano == hoje_manaus().year
-                and mes == hoje_manaus().month
-        ):
-            fixo["pago"] = False
-            dia_original = int(fixo["data"].split("-")[2])
-            ultimo_dia = calendar.monthrange(ano, mes)[1]
-            dia_final = min(dia_original, ultimo_dia)
-
-            nova_data = f"{ano}-{mes:02}-{dia_final:02}"
-
+        if not ja_existe:
             adicionar_gasto(
                 fixo["descricao"],
                 fixo["valor"],
@@ -297,6 +297,7 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
                 True,
                 False,
             )
+
 
     itens.sort(key=lambda x: x["data"])
 
