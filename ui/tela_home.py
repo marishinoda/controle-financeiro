@@ -65,21 +65,6 @@ def tela_home(page: ft.Page, navegar, mes_atual):
                 color=TEXT_PRIMARY,
             ),
 
-            ft.Container(
-                width=120,
-                height=40,
-                bgcolor="#dbeafe",
-                border_radius=25,
-                alignment=ft.Alignment(0, 0),
-                on_click=sair,
-                content=ft.Text(
-                    "Sair 🚪",
-                    size=16,
-                    weight=ft.FontWeight.W_600,
-                    color="#60a5fa",
-                ),
-            ),
-
             # Mês com setinhas
             ft.Row(
                 alignment=ft.MainAxisAlignment.CENTER,
@@ -133,6 +118,22 @@ def tela_home(page: ft.Page, navegar, mes_atual):
                 "Metas e lembretes do mês",
                 lambda e: navegar("anotacoes"),
             ),
+
+            ft.Container(
+                width=100,
+                height=36,
+                bgcolor="#dbeafe",
+                border_radius=22,
+                alignment=ft.Alignment(0, 0),
+                on_click=sair,
+                content=ft.Text(
+                    "Sair",
+                    size=14,
+                    weight=ft.FontWeight.W_600,
+                    color="#60a5fa",
+                ),
+            ),
         ],
     )
+
 

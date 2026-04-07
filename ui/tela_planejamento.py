@@ -5,12 +5,19 @@ import pytz
 import calendar
 
 from data.gastos_repo import atualizar_pago, adicionar_gasto, atualizar_gasto
+from data.gastos_repo import (
+    atualizar_pago,
+    adicionar_gasto,
+    atualizar_gasto,
+    excluir_gasto_total,
+)
 from data.supabase_client import (
     buscar_entradas,
     buscar_gastos_por_mes,
     excluir_gasto,
     buscar_gastos_fixos,
 )
+
 from ui.layout_base import (
     TEXT_PRIMARY,
     TEXT_SECONDARY,
@@ -85,7 +92,10 @@ def marcar_pago_click(item, page, navegar, mes_atual):
 
 
 def excluir(item, page, navegar):
-    excluir_gasto(item["id"])
+    if item.get("fixo"):
+        excluir_gasto_total(item["descricao"], item["valor"])
+    else:
+        excluir_gasto(item["id"])
 
     page.snack_bar = ft.SnackBar(
         ft.Text("Conta excluída"),
@@ -285,18 +295,21 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
 
         ja_existe = any(
             item["descricao"] == fixo["descricao"]
+            and float(item["valor"]) == float(fixo["valor"])
             and item["data"] == nova_data
             for item in itens
         )
 
-        if not ja_existe:
-            adicionar_gasto(
-                fixo["descricao"],
-                fixo["valor"],
-                nova_data,
-                True,
-                False,
-            )
+    if not ja_existe:
+        novo = adicionar_gasto(
+            fixo["descricao"],
+            fixo["valor"],
+            nova_data,
+            True,
+            False,
+        )
+        if novo:
+            itens.extend(novo)
 
 
     itens.sort(key=lambda x: x["data"])

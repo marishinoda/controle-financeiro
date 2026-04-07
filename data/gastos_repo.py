@@ -101,3 +101,17 @@ def atualizar_gasto(id, descricao, valor, data):
 
 def buscar_gastos_fixos():
     return supabase.table("gastos").select("*").eq("fixo", True).execute().data
+
+
+def excluir_gasto_total(descricao, valor):
+    response = (
+        supabase
+        .table("gastos")
+        .delete()
+        .eq("descricao", descricao)
+        .eq("valor", valor)
+        .eq("fixo", True)
+        .execute()
+    )
+
+    return response.data
