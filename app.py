@@ -87,7 +87,7 @@ def main(page: ft.Page):
 
     sessao = supabase.auth.get_session()
 
-    if sessao and sessao.session:
+    if sessao:
         navegar("home")
     else:
         navegar("login")
