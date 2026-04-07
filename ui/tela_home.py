@@ -9,7 +9,7 @@ from ui.layout_base import (
     CARD_RADIUS,
     CARD_PADDING,
 )
-
+from data.supabase_client import supabase
 
 def mes_formatado(mes_atual):
     meses = [
@@ -48,6 +48,10 @@ def card_home(page, titulo, subtitulo, on_click):
 
 
 def tela_home(page: ft.Page, navegar, mes_atual):
+    def sair(e):
+        supabase.auth.sign_out()
+        navegar("login")
+
     return ft.Column(
         spacing=20,
         scroll=ft.ScrollMode.AUTO,
@@ -59,6 +63,21 @@ def tela_home(page: ft.Page, navegar, mes_atual):
                 size=28,
                 weight=ft.FontWeight.BOLD,
                 color=TEXT_PRIMARY,
+            ),
+
+            ft.Container(
+                width=120,
+                height=40,
+                bgcolor="#dbeafe",
+                border_radius=25,
+                alignment=ft.Alignment(0, 0),
+                on_click=sair,
+                content=ft.Text(
+                    "Sair 🚪",
+                    size=16,
+                    weight=ft.FontWeight.W_600,
+                    color="#60a5fa",
+                ),
             ),
 
             # Mês com setinhas

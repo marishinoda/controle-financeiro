@@ -9,6 +9,7 @@ from ui.tela_planejamento import tela_planejamento
 from ui.tela_anotacoes import tela_anotacoes
 from ui.tela_home import tela_home
 from ui.tela_login import tela_login
+from data.supabase_client import supabase
 
 
 def main(page: ft.Page):
@@ -84,8 +85,12 @@ def main(page: ft.Page):
 
         page.update()
 
-    # Inicializa o app no Login
-    navegar("login")
+    sessao = supabase.auth.get_session()
+
+    if sessao and sessao.session:
+        navegar("home")
+    else:
+        navegar("login")
 
 
     # Adiciona o container à página
