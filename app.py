@@ -85,10 +85,17 @@ def main(page: ft.Page):
 
         page.update()
 
-    sessao = supabase.auth.get_session()
+    sessao_salva = page.shared_preferences.get("auth_session")
 
-    if sessao:
-        navegar("home")
+    if sessao_salva:
+        try:
+            supabase.auth.set_session(
+                sessao_salva["access_token"],
+                sessao_salva["refresh_token"]
+            )
+            navegar("home")
+        except Exception:
+            navegar("login")
     else:
         navegar("login")
 

@@ -27,11 +27,22 @@ def tela_login(page: ft.Page, navegar):
 
     def entrar(e):
         try:
-            supabase.auth.sign_in_with_password({
+            resposta = supabase.auth.sign_in_with_password({
                 "email": email.value,
                 "password": senha.value,
             })
+
+            if resposta.session:
+                page.shared_preferences.set(
+                    "auth_session",
+                    {
+                        "access_token": resposta.session.access_token,
+                        "refresh_token": resposta.session.refresh_token,
+                    }
+                )
+
             navegar("home")
+
         except Exception:
             page.snack_bar = ft.SnackBar(
                 ft.Text("Erro ao entrar"),

@@ -135,19 +135,41 @@ def tela_gastos(page: ft.Page, navegar, mes_atual):
 
     def salvar_gasto(e):
         try:
-            descricao_valor = descricao.value
+            descricao_valor = descricao.value.strip()
             valor_valor = converter_real_para_float(valor.value)
-            data_valor = datetime.strptime(data.value, "%d/%m/%Y").strftime("%Y-%m-%d")
+            data_convertida = datetime.strptime(
+                data.value, "%d/%m/%Y"
+            )
 
+            if (
+                    data_convertida.month != mes_atual["mes"]
+                    or data_convertida.year != mes_atual["ano"]
+            ):
+                page.snack_bar = ft.SnackBar(
+                    content=ft.Text("A data precisa estar no mês selecionado 📅"),
+                    bgcolor="#e75480"
+                )
+                page.snack_bar.open = True
+                page.update()
+                return
 
+            data_valor = data_convertida.strftime("%Y-%m-%d")
 
-            adicionar_gasto(descricao_valor, valor_valor, data_valor, fixo_valor)
+            adicionar_gasto(
+                descricao_valor,
+                valor_valor,
+                data_valor,
+                fixo_valor
+            )
 
             print("Gasto salvo com sucesso!")
 
             # limpa campos
             descricao.value = ""
             valor.value = ""
+
+            # volta pra home e recarrega a lista
+            navegar("home")
             page.update()
 
         except Exception as erro:

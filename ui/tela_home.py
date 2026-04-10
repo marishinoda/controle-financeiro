@@ -50,7 +50,9 @@ def card_home(page, titulo, subtitulo, on_click):
 def tela_home(page: ft.Page, navegar, mes_atual):
     def sair(e):
         supabase.auth.sign_out()
+        page.shared_preferences.remove("auth_session")
         navegar("login")
+
 
     return ft.Column(
         spacing=20,
