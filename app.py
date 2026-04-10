@@ -87,6 +87,8 @@ def main(page: ft.Page):
 
     sessao_salva = page.shared_preferences.get("auth_session")
 
+    print("SESSÃO LIDA:", sessao_salva)
+
     if sessao_salva:
         try:
             supabase.auth.set_session(

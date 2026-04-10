@@ -41,6 +41,8 @@ def tela_login(page: ft.Page, navegar):
                     }
                 )
 
+                print("SESSÃO SALVA:", page.shared_preferences.get("auth_session"))
+
             navegar("home")
 
         except Exception:
