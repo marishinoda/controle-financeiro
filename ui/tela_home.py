@@ -48,9 +48,9 @@ def card_home(page, titulo, subtitulo, on_click):
 
 
 def tela_home(page: ft.Page, navegar, mes_atual):
-    def sair(e):
+    async def sair(e):
         supabase.auth.sign_out()
-        page.shared_preferences.remove("auth_session")
+        await page.shared_preferences.remove("auth_session")
         navegar("login")
 
 

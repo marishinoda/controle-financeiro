@@ -25,7 +25,7 @@ def tela_login(page: ft.Page, navegar):
         label_style=ft.TextStyle(color="#777777"),
     )
 
-    def entrar(e):
+    async def entrar(e):
         try:
             resposta = supabase.auth.sign_in_with_password({
                 "email": email.value,
@@ -33,7 +33,7 @@ def tela_login(page: ft.Page, navegar):
             })
 
             if resposta.session:
-                page.shared_preferences.set(
+                await page.shared_preferences.set(
                     "auth_session",
                     {
                         "access_token": resposta.session.access_token,
@@ -41,7 +41,10 @@ def tela_login(page: ft.Page, navegar):
                     }
                 )
 
-                print("SESSÃO SALVA:", page.shared_preferences.get("auth_session"))
+                print(
+                    "SESSÃO SALVA:",
+                    await page.shared_preferences.get("auth_session")
+                )
 
             navegar("home")
 
@@ -51,6 +54,7 @@ def tela_login(page: ft.Page, navegar):
                 open=True,
             )
             page.update()
+
 
     def criar_conta(e):
         try:

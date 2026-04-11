@@ -12,7 +12,7 @@ from ui.tela_login import tela_login
 from data.supabase_client import supabase
 
 
-def main(page: ft.Page):
+async def main(page: ft.Page):
     # Configuração básica
     page.title = "Controle Financeiro"
     page.theme_mode = ft.ThemeMode.DARK
@@ -85,7 +85,7 @@ def main(page: ft.Page):
 
         page.update()
 
-    sessao_salva = page.shared_preferences.get("auth_session")
+    sessao_salva = await page.shared_preferences.get("auth_session")
 
     print("SESSÃO LIDA:", sessao_salva)
 
