@@ -1,6 +1,7 @@
 import flet as ft
 from datetime import datetime
 import pytz
+import json
 
 from ui.tela_home import tela_home
 from ui.tela_entradas import tela_entradas
@@ -85,7 +86,8 @@ async def main(page: ft.Page):
 
         page.update()
 
-    sessao_salva = await page.shared_preferences.get("auth_session")
+    sessao_json = await page.shared_preferences.get("auth_session")
+    sessao_salva = json.loads(sessao_json) if sessao_json else None
 
     print("SESSÃO LIDA:", sessao_salva)
 

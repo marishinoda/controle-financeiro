@@ -1,5 +1,6 @@
 import flet as ft
 from data.supabase_client import supabase
+import json
 
 
 def tela_login(page: ft.Page, navegar):
@@ -35,10 +36,10 @@ def tela_login(page: ft.Page, navegar):
             if resposta.session:
                 await page.shared_preferences.set(
                     "auth_session",
-                    {
+                    json.dumps({
                         "access_token": resposta.session.access_token,
                         "refresh_token": resposta.session.refresh_token,
-                    }
+                    })
                 )
 
                 print(
