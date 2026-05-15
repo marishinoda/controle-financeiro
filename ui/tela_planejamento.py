@@ -300,14 +300,14 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
             for item in itens
         )
 
-    if not ja_existe:
-        novo = adicionar_gasto(
-            fixo["descricao"],
-            fixo["valor"],
-            nova_data,
+        if not ja_existe:
+             novo = adicionar_gasto(
+                 fixo["descricao"],
+                 fixo["valor"],
+                 nova_data,
             True,
             False,
-        )
+            )
         if novo:
             itens.extend(novo)
 

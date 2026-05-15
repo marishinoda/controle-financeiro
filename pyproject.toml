@@ -1,0 +1,12 @@
+[project]
+name = "controle_financeiro"
+version = "1.0.0"
+
+[tool.flet]
+app.module = "app"
+
+[tool.flet.macos]
+icon = "assets/icon.png"
+
+[tool.flet.ios]
+icon = "assets/icon.png"

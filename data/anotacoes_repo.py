@@ -1,4 +1,11 @@
 from data.supabase_client import supabase
+def get_user_id():
+    user = supabase.auth.get_user()
+
+    if user and user.user:
+        return user.user.id
+
+    return None
 
 
 def buscar_anotacao(ano, mes):
@@ -8,6 +15,7 @@ def buscar_anotacao(ano, mes):
         .select("*")
         .eq("ano", ano)
         .eq("mes", mes)
+        .eq("user_id", get_user_id())
         .execute()
     )
 
@@ -33,6 +41,7 @@ def salvar_anotacao(ano, mes, texto):
             "ano": ano,
             "mes": mes,
             "texto": texto,
+            "user_id": get_user_id(),
         })
         .execute()
     )

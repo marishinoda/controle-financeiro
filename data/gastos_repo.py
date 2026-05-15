@@ -15,11 +15,20 @@ def buscar_gastos():
         supabase
         .table("gastos")
         .select("*")
+        .eq("user_id", get_user_id())
         .order("data")
         .execute()
     )
 
     return response.data or []
+
+def get_user_id():
+    user = supabase.auth.get_user()
+
+    if user and user.user:
+        return user.user.id
+
+    return None
 
 def adicionar_gasto(descricao, valor, data, fixo, pago=False):
 
@@ -32,6 +41,7 @@ def adicionar_gasto(descricao, valor, data, fixo, pago=False):
             "data": data,
             "fixo": fixo,
             "pago": pago,
+            "user_id": get_user_id(),
         })
         .execute()
     )
@@ -46,7 +56,8 @@ def adicionar_entrada(descricao, valor, data):
         .insert({
             "descricao": descricao,
             "valor": valor,
-            "data": data
+            "data": data,
+            "user_id": get_user_id(),
         })
         .execute()
     )
@@ -84,6 +95,7 @@ def buscar_entradas():
         supabase
         .table("entradas")
         .select("*")
+        .eq("user_id", get_user_id())
         .order("data")
         .execute()
     )
