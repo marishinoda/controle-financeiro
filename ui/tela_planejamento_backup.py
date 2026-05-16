@@ -151,7 +151,7 @@ def linha_planejamento(item, page, navegar):
                                                 weight=ft.FontWeight.BOLD,
                                             ),
                                             bgcolor="#d1fae5",
-                                            padding=ft.padding.symmetric(horizontal=8, vertical=2),
+                                            padding=ft.Padding(left=8, right=8, top=2, bottom=2),
                                             border_radius=10,
                                             visible=item.get("fixo", False),
                                         ),

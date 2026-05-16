@@ -172,7 +172,7 @@ def linha_planejamento(item, page, navegar, mes_atual):
         bgcolor="#ffffff",
         border_radius=20,
         padding=15,
-        margin=ft.margin.only(bottom=15),
+        margin=ft.Margin(bottom=15),
         content=ft.Row(
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
             vertical_alignment=ft.CrossAxisAlignment.CENTER,
@@ -238,7 +238,7 @@ def linha_planejamento(item, page, navegar, mes_atual):
                                                 weight=ft.FontWeight.BOLD,
                                             ),
                                             bgcolor="#d1fae5",
-                                            padding=ft.padding.symmetric(horizontal=8, vertical=2),
+                                            padding=ft.Padding(left=8, right=8, top=2, bottom=2),
                                             border_radius=10,
                                             visible=item.get("fixo", False),
                                         ),
@@ -363,10 +363,10 @@ def tela_planejamento(page: ft.Page, navegar, mes_atual):
                     controls=[
                         ft.Container(
                             width=min(page.width * 0.84, 340),
-                            margin=ft.margin.only(left=-8),
+                            margin=ft.Margin(left=-8, top=0, right=0, bottom=0),
                             bgcolor="white",
                             border_radius=35,
-                            padding=ft.padding.symmetric(horizontal=18, vertical=10),
+                            padding=ft.Padding(left=18, right=18, top=10, bottom=10),
                             content=ft.Column(
                                 spacing=4,
                                 controls=[

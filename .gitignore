@@ -1,4 +1,9 @@
 .venv/
 __pycache__/
 *.pyc
-.env
+.envbuild/
+.venv/
+.venv/
+.venv/
+.DS_Store
+__pycache__/

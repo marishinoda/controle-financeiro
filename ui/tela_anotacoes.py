@@ -74,7 +74,7 @@ def tela_anotacoes(page: ft.Page, navegar, mes_atual):
                             ft.Container(
                                 bgcolor="#f3e8ed",
                                 border_radius=30,
-                                padding=ft.padding.symmetric(horizontal=24, vertical=12),
+                                padding=ft.Padding(left=24, right=24, top=12, bottom=12),
                                 on_click=lambda e: navegar("home"),
                                 content=ft.Row(
                                     tight=True,
