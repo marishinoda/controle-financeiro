@@ -111,4 +111,4 @@ async def main(page: ft.Page):
 
 
 # Execução do app
-ft.run(main)
+ft.app(target=main)
