@@ -86,7 +86,7 @@ async def main(page: ft.Page):
 
         page.update()
 
-    sessao_json = await page.shared_preferences.get("auth_session")
+    sessao_json = await page.client_storage.get_async("auth_session")
     sessao_salva = json.loads(sessao_json) if sessao_json else None
 
     print("SESSÃO LIDA:", sessao_salva)
