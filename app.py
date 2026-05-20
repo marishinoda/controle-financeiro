@@ -1,15 +1,14 @@
 import flet as ft
 from datetime import datetime
 import pytz
-import json
 
 from ui.tela_home import tela_home
 from ui.tela_entradas import tela_entradas
 from ui.tela_gastos import tela_gastos
 from ui.tela_planejamento import tela_planejamento
 from ui.tela_anotacoes import tela_anotacoes
-from ui.tela_home import tela_home
 from ui.tela_login import tela_login
+
 from data.supabase_client import supabase
 
 
@@ -87,14 +86,20 @@ async def main(page: ft.Page):
         page.update()
 
     try:
-        sessao_json = await page.client_storage.get_async("auth_session")
+        sessao_salva = await page.session_storage.get_async("auth_session")
     except:
-        sessao_json = await page.shared_preferences.get("auth_session")
+        try:
+            sessao_json = await page.shared_preferences.get("auth_session")
 
-    if isinstance(sessao_json, str):
-        sessao_salva = json.loads(sessao_json)
-    else:
-        sessao_salva = sessao_json if sessao_json else None
+            if isinstance(sessao_json, str):
+                import json
+                sessao_salva = json.loads(sessao_json)
+            else:
+                sessao_salva = sessao_json
+
+        except:
+            sessao_salva = None
+
     print("SESSÃO LIDA:", sessao_salva)
 
     if sessao_salva:

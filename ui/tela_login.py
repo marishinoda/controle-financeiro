@@ -34,13 +34,22 @@ def tela_login(page: ft.Page, navegar):
             })
 
             if resposta.session:
-                await page.shared_preferences.set(
-                    "auth_session",
-                    json.dumps({
-                        "access_token": resposta.session.access_token,
-                        "refresh_token": resposta.session.refresh_token,
-                    })
-                )
+                try:
+                    await page.session_storage.set_async(
+                        "auth_session",
+                        {
+                            "access_token": resposta.session.access_token,
+                            "refresh_token": resposta.session.refresh_token,
+                        }
+                    )
+                except:
+                    await page.shared_preferences.set(
+                        "auth_session",
+                        json.dumps({
+                            "access_token": resposta.session.access_token,
+                            "refresh_token": resposta.session.refresh_token,
+                        })
+                    )
 
                 print(
                     "SESSÃO SALVA:",
