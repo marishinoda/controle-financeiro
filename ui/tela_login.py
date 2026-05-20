@@ -46,10 +46,7 @@ def tela_login(page: ft.Page, navegar):
                 except Exception as erro:
                     print("ERRO AO SALVAR SESSÃO:", erro)
 
-                print(
-                    "SESSÃO SALVA:",
-                    await page.shared_preferences.get("auth_session")
-                )
+            print("SESSÃO SALVA")
 
             navegar("home")
 
