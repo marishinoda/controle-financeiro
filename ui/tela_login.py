@@ -35,14 +35,6 @@ def tela_login(page: ft.Page, navegar):
 
             if resposta.session:
                 try:
-                    await page.session_storage.set_async(
-                        "auth_session",
-                        {
-                            "access_token": resposta.session.access_token,
-                            "refresh_token": resposta.session.refresh_token,
-                        }
-                    )
-                except:
                     await page.shared_preferences.set(
                         "auth_session",
                         json.dumps({
@@ -50,6 +42,9 @@ def tela_login(page: ft.Page, navegar):
                             "refresh_token": resposta.session.refresh_token,
                         })
                     )
+
+                except Exception as erro:
+                    print("ERRO AO SALVAR SESSÃO:", erro)
 
                 print(
                     "SESSÃO SALVA:",
