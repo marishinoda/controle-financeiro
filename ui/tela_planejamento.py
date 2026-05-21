@@ -174,7 +174,7 @@ def linha_planejamento(item, page, navegar, mes_atual):
         bgcolor="#ffffff",
         border_radius=20,
         padding=15,
-        margin=ft.margin.only(bottom=15),
+        margin=ft.Margin(0, 0, 0, 15),
         content=ft.Row(
             alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
             vertical_alignment=ft.CrossAxisAlignment.CENTER,

@@ -35,7 +35,7 @@ def tela_login(page: ft.Page, navegar):
 
             if resposta.session:
                 try:
-                    await page.shared_preferences.set_async(
+                    await page.shared_preferences.set(
                         "auth_session",
                         json.dumps({
                             "access_token": resposta.session.access_token,
