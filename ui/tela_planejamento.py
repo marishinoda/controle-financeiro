@@ -254,8 +254,8 @@ def linha_planejamento(item, page, navegar, mes_atual):
                             icon_color="#999999",
                             items=[
                                 ft.PopupMenuItem(
-                                    content=ft.Text("Editar"),
-                                    on_click=lambda e, item=item: editar_gasto(item, page, navegar),
+                                    text="Editar",
+                                    on_click=lambda e: editar_gasto(item, page, navegar),
                                 ),
                                 ft.PopupMenuItem(
                                     content=ft.Text("Excluir"),
