@@ -86,19 +86,17 @@ async def main(page: ft.Page):
         page.update()
 
     try:
-        sessao_salva = await page.session_storage.get_async("auth_session")
-    except:
-        try:
-            sessao_json = await page.shared_preferences.get("auth_session")
+        sessao_json = await page.shared_preferences.get("auth_session")
 
-            if isinstance(sessao_json, str):
-                import json
-                sessao_salva = json.loads(sessao_json)
-            else:
-                sessao_salva = sessao_json
+        if isinstance(sessao_json, str):
+            import json
+            sessao_salva = json.loads(sessao_json)
+        else:
+            sessao_salva = sessao_json
 
-        except:
-            sessao_salva = None
+    except Exception as erro:
+        print("ERRO AO LER SESSÃO:", erro)
+        sessao_salva = None
 
     print("SESSÃO LIDA:", sessao_salva)
 
