@@ -156,7 +156,9 @@ def editar_gasto(item, page, navegar):
         ],
     )
 
-    page.show_dialog(dialog)
+    page.dialog = dialog
+    dialog.open = True
+    page.update()
 
 def fechar_modal(e):
     e.page.dialog.open = False
