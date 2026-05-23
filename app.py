@@ -1,6 +1,7 @@
 import flet as ft
 from datetime import datetime
 import pytz
+import asyncio
 
 from ui.tela_home import tela_home
 from ui.tela_entradas import tela_entradas
@@ -115,8 +116,9 @@ async def main(page: ft.Page):
 
     # Adiciona o container à página
     page.scroll = ft.ScrollMode.AUTO
-
     page.add(conteudo)
+
+    await asyncio.sleep(0.1)
 
 
 # Execução do app
