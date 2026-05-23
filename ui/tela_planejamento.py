@@ -156,14 +156,8 @@ def editar_gasto(item, page, navegar):
         ],
     )
 
-    page.dialog = dialog
-    dialog.open = True
-    page.update()
 
-def fechar_modal(e):
-    e.page.dialog.open = False
-    e.page.update()
-
+    page.show_dialog(dialog)
 
 
 # ---------- COMPONENTE ITEM ----------
@@ -254,8 +248,9 @@ def linha_planejamento(item, page, navegar, mes_atual):
                             icon_color="#999999",
                             items=[
                                 ft.PopupMenuItem(
-                                    text="Editar",
-                                    on_click=lambda e: editar_gasto(item, page, navegar),
+                                    content=ft.Text("Editar"),
+                                    on_click=lambda e, item=item: editar_gasto(item, page, navegar),
+
                                 ),
                                 ft.PopupMenuItem(
                                     content=ft.Text("Excluir"),
