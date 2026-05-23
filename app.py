@@ -86,6 +86,12 @@ async def main(page: ft.Page):
 
         page.update()
 
+    page.scroll = ft.ScrollMode.AUTO
+    page.add(conteudo)
+
+    await asyncio.sleep(0.1)
+
+
     try:
         sessao_json = await page.shared_preferences.get("auth_session")
 
@@ -114,11 +120,6 @@ async def main(page: ft.Page):
         navegar("login")
 
 
-    # Adiciona o container à página
-    page.scroll = ft.ScrollMode.AUTO
-    page.add(conteudo)
-
-    await asyncio.sleep(0.1)
 
 
 # Execução do app
