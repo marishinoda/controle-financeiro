@@ -119,6 +119,10 @@ def editar_gasto(item, page, navegar):
         border_radius=20,
     )
 
+    def fechar_dialog(e=None):
+        dialog.open = False
+        page.update()
+
     def salvar_edicao(e):
         novo_valor = valor_para_float(valor.value)
 
@@ -129,7 +133,7 @@ def editar_gasto(item, page, navegar):
             item["data"],
         )
 
-        page.pop_dialog()
+        fechar_dialog()
 
         page.snack_bar = ft.SnackBar(
             ft.Text("Edição salva"),
@@ -148,7 +152,7 @@ def editar_gasto(item, page, navegar):
         actions=[
             ft.TextButton(
                 "Cancelar",
-                on_click=lambda e: page.pop_dialog()
+                on_click=fechar_dialog
             ),
             ft.ElevatedButton(
                 "Salvar",
@@ -157,7 +161,9 @@ def editar_gasto(item, page, navegar):
         ],
     )
 
-    page.dialog = dialog
+    if dialog not in page.overlay:
+        page.overlay.append(dialog)
+
     dialog.open = True
     page.update()
 
