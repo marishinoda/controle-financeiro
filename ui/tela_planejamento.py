@@ -157,7 +157,9 @@ def editar_gasto(item, page, navegar):
         ],
     )
 
-    page.show_dialog(dialog)
+    page.dialog = dialog
+    dialog.open = True
+    page.update()
 
 
 # ---------- COMPONENTE ITEM ----------
