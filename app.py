@@ -93,7 +93,7 @@ async def main(page: ft.Page):
 
 
     try:
-        sessao_json = await page.shared_preferences.get("auth_session")
+        sessao_json = await page.client_storage.get("auth_session")
 
         if isinstance(sessao_json, str):
             import json
