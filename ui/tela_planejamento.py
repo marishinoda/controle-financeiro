@@ -1,5 +1,5 @@
 from textwrap import wrap
-import asyncio
+
 import flet as ft
 from datetime import datetime
 import pytz
@@ -157,11 +157,7 @@ def editar_gasto(item, page, navegar):
         ],
     )
 
-    async def abrir():
-        await asyncio.sleep(0.1)
-        page.show_dialog(dialog)
-
-    page.run_task(abrir)
+    page.show_dialog(dialog)
 
 
 # ---------- COMPONENTE ITEM ----------
