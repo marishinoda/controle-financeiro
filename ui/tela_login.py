@@ -35,7 +35,7 @@ def tela_login(page: ft.Page, navegar):
 
             if resposta.session:
                 try:
-                    await page.shared_preferences.set(
+                    salvou = await page.shared_preferences.set(
                         "auth_session",
                         json.dumps({
                             "access_token": resposta.session.access_token,
@@ -43,10 +43,14 @@ def tela_login(page: ft.Page, navegar):
                         })
                     )
 
+                    print("SALVOU?", salvou)
+
+                    sessao_teste = await page.shared_preferences.get("auth_session")
+
+                    print("SESSÃO TESTE:", sessao_teste)
+
                 except Exception as erro:
                     print("ERRO AO SALVAR SESSÃO:", erro)
-
-            print("SESSÃO SALVA")
 
             navegar("home")
 
