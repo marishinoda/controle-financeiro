@@ -16,11 +16,12 @@ from data.supabase_client import supabase
 
 async def main(page: ft.Page):
 
-    print("ATRIBUTOS PAGE:")
-    print(dir(page))
+    import importlib.metadata
 
-    print("SHARED PREFS:")
-    print(page.shared_preferences)
+    print("FLET VERSION:", importlib.metadata.version("flet"))
+    print("HAS shared_preferences:", hasattr(page, "shared_preferences"))
+    print("HAS client_storage:", hasattr(page, "client_storage"))
+
 
     # Configuração básica
     page.title = "Controle Financeiro"
