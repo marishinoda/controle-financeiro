@@ -91,7 +91,6 @@ async def main(page: ft.Page):
 
     await asyncio.sleep(0.1)
 
-
     try:
         sessao_json = await page.client_storage.get("auth_session")
 
@@ -113,16 +112,15 @@ async def main(page: ft.Page):
                 sessao_salva["access_token"],
                 sessao_salva["refresh_token"]
             )
+
             navegar("home")
 
-    except Exception as erro:
-    print("ERRO AO RESTAURAR SESSÃO:", repr(erro))
-    navegar("login")
+        except Exception as erro:
+            print("ERRO AO RESTAURAR SESSÃO:", repr(erro))
+            navegar("login")
 
     else:
         navegar("login")
-
-
 
 
 # Execução do app
