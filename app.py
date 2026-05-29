@@ -108,10 +108,12 @@ async def main(page: ft.Page):
 
     if sessao_salva:
         try:
-            supabase.auth.set_session(
+            resposta = supabase.auth.set_session(
                 sessao_salva["access_token"],
                 sessao_salva["refresh_token"]
             )
+
+            print("SESSÃO RESTAURADA:", resposta.session)
 
             navegar("home")
 
