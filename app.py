@@ -117,9 +117,9 @@ async def main(page: ft.Page):
 
             navegar("home")
 
-        except Exception as erro:
-            print("ERRO AO RESTAURAR SESSÃO:", repr(erro))
-            navegar("login")
+    except Exception as erro:
+    print("ERRO AO RESTAURAR SESSÃO:", repr(erro))
+    navegar("login")
 
     else:
         navegar("login")
