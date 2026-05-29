@@ -2,6 +2,7 @@ import flet as ft
 from datetime import datetime
 import pytz
 import asyncio
+import json
 
 from ui.tela_home import tela_home
 from ui.tela_entradas import tela_entradas
@@ -14,6 +15,15 @@ from data.supabase_client import supabase
 
 
 async def main(page: ft.Page):
+
+    print("ATRIBUTOS PAGE:")
+    print(dir(page))
+
+    print("SHARED PREFS:")
+    print(page.shared_preferences)
+
+    # Configuração básica
+    page.title = "Controle Financeiro"
     # Configuração básica
     page.title = "Controle Financeiro"
     page.theme_mode = ft.ThemeMode.DARK
@@ -59,7 +69,6 @@ async def main(page: ft.Page):
             )
 
         elif destino == "home":
-        # Decide qual tela mostrar
             conteudo.controls.append(
                 tela_home(page, navegar, mes_atual)
             )
@@ -89,13 +98,17 @@ async def main(page: ft.Page):
     page.scroll = ft.ScrollMode.AUTO
     page.add(conteudo)
 
+    # Pequena espera para garantir shared_preferences pronto
     await asyncio.sleep(0.1)
 
+    # =========================
+    # RESTAURA SESSÃO
+    # =========================
+
     try:
-        sessao_json = await page.client_storage.get("auth_session")
+        sessao_json = await page.shared_preferences.get("auth_session")
 
         if isinstance(sessao_json, str):
-            import json
             sessao_salva = json.loads(sessao_json)
         else:
             sessao_salva = sessao_json
@@ -115,11 +128,24 @@ async def main(page: ft.Page):
 
             print("SESSÃO RESTAURADA:", resposta.session)
 
+            # SALVA TOKENS NOVOS
+            if resposta.session:
+                await page.shared_preferences.set(
+                    "auth_session",
+                    json.dumps({
+                        "access_token": resposta.session.access_token,
+                        "refresh_token": resposta.session.refresh_token,
+                    })
+                )
+
             navegar("home")
 
-    except Exception as erro:
-    print("ERRO AO RESTAURAR SESSÃO:", repr(erro))
-    navegar("login")
+        except Exception as erro:
+            print("ERRO AO RESTAURAR SESSÃO:", repr(erro))
+
+            await page.shared_preferences.remove("auth_session")
+
+            navegar("login")
 
     else:
         navegar("login")
