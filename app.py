@@ -114,8 +114,11 @@ async def main(page: ft.Page):
                 sessao_salva["refresh_token"]
             )
             navegar("home")
-        except Exception:
-            navegar("login")
+
+    except Exception as erro:
+    print("ERRO AO RESTAURAR SESSÃO:", repr(erro))
+    navegar("login")
+
     else:
         navegar("login")
 
