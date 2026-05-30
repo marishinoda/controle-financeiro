@@ -131,7 +131,7 @@ async def main(page: ft.Page):
 
             # SALVA TOKENS NOVOS
             if resposta.session:
-                await page.shared_preferences.set(
+                await page.client_storage.set(
                     "auth_session",
                     json.dumps({
                         "access_token": resposta.session.access_token,
@@ -144,7 +144,7 @@ async def main(page: ft.Page):
         except Exception as erro:
             print("ERRO AO RESTAURAR SESSÃO:", repr(erro))
 
-            await page.shared_preferences.remove("auth_session")
+            await page.client_storage.remove("auth_session")
 
             navegar("login")
 
