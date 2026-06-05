@@ -100,7 +100,7 @@ async def main(page: ft.Page):
     page.add(conteudo)
 
     # Pequena espera para garantir shared_preferences pronto
-    await asyncio.sleep(0.1)
+    await asyncio.sleep(2)
 
     # =========================
     # RESTAURA SESSÃO
