@@ -35,7 +35,7 @@ def tela_login(page: ft.Page, navegar):
 
             if resposta.session:
                 try:
-                    await page.client_storage.set(
+                    await page.client_storage.set_async(
                         "auth_session",
                         json.dumps({
                             "access_token": resposta.session.access_token,
@@ -44,7 +44,7 @@ def tela_login(page: ft.Page, navegar):
                     )
 
 
-                    sessao_teste = await page.client_storage.get("auth_session")
+                    sessao_teste = await page.client_storage.get_async("auth_session")
 
                     print("SESSÃO TESTE:", sessao_teste)
 
