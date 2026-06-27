@@ -1,16 +1,35 @@
 import os
-from supabase import create_client
+from pathlib import Path
 from dotenv import load_dotenv
+from supabase import create_client
 
-load_dotenv()
+BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv(BASE_DIR / ".env")
 
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_ANON_KEY = os.getenv("SUPABASE_ANON_KEY")
+_client = None
 
-if not SUPABASE_URL or not SUPABASE_ANON_KEY:
-    raise Exception("Variáveis do Supabase não encontradas no .env")
 
-supabase = create_client(SUPABASE_URL, SUPABASE_ANON_KEY)
+def get_supabase():
+    global _client
+
+    url = os.getenv("SUPABASE_URL")
+    key = os.getenv("SUPABASE_ANON_KEY")
+
+    if not url or not key:
+        raise RuntimeError("Variáveis do Supabase não encontradas")
+
+    if _client is None:
+        _client = create_client(url, key)
+
+    return _client
+
+
+class LazySupabase:
+    def __getattr__(self, name):
+        return getattr(get_supabase(), name)
+
+
+supabase = LazySupabase()
 
 
 def buscar_gastos():
